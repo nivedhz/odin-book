@@ -1,5 +1,7 @@
+import SignUpForm from "@/features/auth/sign-up/components/SignUpForm";
+
 const SignUp = () => {
-  return <h1>SignUp</h1>;
+  return <SignUpForm />;
 };
 
 export default SignUp;
