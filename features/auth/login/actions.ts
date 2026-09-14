@@ -4,6 +4,7 @@ import z from "zod";
 import { InputData, LoginResponse } from "./types";
 import { prisma } from "@/lib/prisma";
 import { createSession } from "@/lib/auth/session";
+import { verifyPassword } from "@/lib/auth/password";
 
 const schema = z.object({
   email: z.email("Invalid email address"),
@@ -55,11 +56,24 @@ export async function handleLogin(
       },
     });
 
-    if (!user || user.password !== validatedFields.data.password) {
+    if (!user) {
       return {
         success: false,
         errors: {
           email: "Incorrect email or password",
+        },
+        message: "Incorrect email or password",
+      };
+    }
+    const passwordStatus = await verifyPassword(
+      validatedFields.data.password,
+      user.password,
+    );
+    if (!passwordStatus) {
+      return {
+        success: false,
+        errors: {
+          password: "Incorrect email or password",
         },
         message: "Incorrect email or password",
       };
