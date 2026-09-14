@@ -1,13 +1,7 @@
+import LoginForm from "@/features/auth/login/components/LoginForm";
+
 const Login = () => {
-  return (
-    <form action="/login">
-      <label htmlFor="email">Email</label>
-      <input type="email" />
-      <label htmlFor="password">Password</label>
-      <input type="password" />
-      <button type="submit">Login</button>
-    </form>
-  );
+  return <LoginForm />;
 };
 
 export default Login;
