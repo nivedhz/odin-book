@@ -1,6 +1,7 @@
 import { getSession } from "@/lib/auth/session";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import LogoutButton from "./LogoutButton";
 
 const Navbar = async () => {
   const session = await getSession();
@@ -15,7 +16,7 @@ const Navbar = async () => {
       </div>
       <nav className="flex gap-4">
         {session ? (
-          <p>something</p>
+          <LogoutButton />
         ) : (
           <>
             <Button variant={"ghost"} className={"py-4 px-6 cursor-pointer"}>
