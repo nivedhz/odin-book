@@ -5,6 +5,7 @@ import { InputData, LoginResponse } from "./types";
 import { prisma } from "@/lib/prisma";
 import { createSession } from "@/lib/auth/session";
 import { verifyPassword } from "@/lib/auth/password";
+import { redirect } from "next/navigation";
 
 const schema = z.object({
   email: z.email("Invalid email address"),
@@ -80,11 +81,6 @@ export async function handleLogin(
     }
 
     await createSession(user.id);
-    return {
-      success: true,
-      errors: {},
-      message: "You have successfully been logged in",
-    };
   } catch (err) {
     return {
       success: false,
@@ -95,4 +91,5 @@ export async function handleLogin(
       message: "Something went wrong on the server",
     };
   }
+  redirect("/");
 }

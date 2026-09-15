@@ -6,6 +6,7 @@ import { hashPassword } from "@/lib/auth/password";
 import { prisma } from "@/lib/prisma";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/client";
 import { createSession } from "@/lib/auth/session";
+import { redirect } from "next/navigation";
 
 const schema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
@@ -66,12 +67,6 @@ export async function handleSignUp(
       },
     });
     await createSession(user.id);
-
-    return {
-      success: true,
-      errors: {},
-      message: "User created successfully",
-    };
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError && err.code === "P2002") {
       return {
@@ -89,4 +84,5 @@ export async function handleSignUp(
       };
     }
   }
+  redirect("/");
 }
