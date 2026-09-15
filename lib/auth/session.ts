@@ -78,6 +78,6 @@ export async function deleteSession(): Promise<void> {
 export async function getSession(): Promise<JWTPayload | null> {
   const cookieStore = await cookies();
   const session = cookieStore.get("session");
-  if (!session) return null;
+  if (!session?.value) return null;
   return await decrypt(session.value);
 }
