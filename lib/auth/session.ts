@@ -28,6 +28,7 @@ async function encrypt(payload: JWTPayload): Promise<string> {
  * @returns {Promise<JWTPayload | null>}
  */
 async function decrypt(token: string): Promise<JWTPayload | null> {
+  if (!token) return null;
   try {
     const { payload } = await jwtVerify(token, encodedKey, {
       algorithms: ["HS256"],
