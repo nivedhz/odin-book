@@ -1,7 +1,12 @@
 import LoginForm from "@/features/auth/login/components/LoginForm";
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { userEvent } from "@testing-library/user-event";
+import { handleLogin } from "@/features/auth/login/actions";
+
+vi.mock("@/features/auth/login/actions", () => ({
+  handleLogin: vi.fn(),
+}));
 
 describe("Login", () => {
   it("Renders", () => {
@@ -22,6 +27,13 @@ describe("Login", () => {
     expect(screen.getByLabelText("Password")).toBeDefined();
     expect(screen.getByRole("button", { name: "Login" })).toBeDefined();
   });
+  it("Home link takes to /", () => {
+    render(<LoginForm />);
+    expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute(
+      "href",
+      "/",
+    );
+  });
   it("Email Takes input", async () => {
     const user = userEvent.setup();
     render(<LoginForm />);
@@ -37,5 +49,19 @@ describe("Login", () => {
     expect(passwordInput).toBeDefined();
     await user.type(passwordInput, "password");
     expect(passwordInput).toHaveValue("password");
+  });
+  it("Submit calls handleLogin", async () => {
+    vi.mocked(handleLogin).mockResolvedValue({
+      success: true,
+      message: "Login successful",
+    });
+    const user = userEvent.setup();
+    render(<LoginForm />);
+    const emailInput = screen.getByLabelText("Email");
+    const passwordInput = screen.getByLabelText("Password");
+    await user.type(emailInput, "Ri9wI@example.com");
+    await user.type(passwordInput, "password");
+    await user.click(screen.getByRole("button", { name: "Login" }));
+    expect(handleLogin).toHaveBeenCalled();
   });
 });
