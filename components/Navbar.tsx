@@ -6,7 +6,7 @@ import LogoutButton from "./LogoutButton";
 const Navbar = async () => {
   const session = await getSession();
   return (
-    <div className="flex justify-between items-center px-20 py-4 border-b border-gray-200/20">
+    <nav className="flex justify-between items-center px-20 py-4 border-b border-gray-200/20">
       <div className="">
         <Link href={"/"}>
           <h1 className="text-2xl font-semibold tracking-[-0.02em] text-white">
@@ -14,21 +14,27 @@ const Navbar = async () => {
           </h1>
         </Link>
       </div>
-      <nav className="flex gap-4">
+      <ul className="flex gap-4">
         {session ? (
-          <LogoutButton />
+          <li>
+            <LogoutButton />
+          </li>
         ) : (
           <>
-            <Button variant={"ghost"} className={"py-4 px-6 cursor-pointer"}>
-              <Link href="/login">Login</Link>
-            </Button>
-            <Button className={"py-4 px-6 cursor-pointer"}>
-              <Link href="/sign-up">Sign Up</Link>
-            </Button>
+            <li>
+              <Button variant={"ghost"} className={"py-4 px-6 cursor-pointer"}>
+                <Link href="/login">Login</Link>
+              </Button>
+            </li>
+            <li>
+              <Button className={"py-4 px-6 cursor-pointer"}>
+                <Link href="/sign-up">Sign Up</Link>
+              </Button>
+            </li>
           </>
         )}
-      </nav>
-    </div>
+      </ul>
+    </nav>
   );
 };
 
