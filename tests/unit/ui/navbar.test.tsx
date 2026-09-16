@@ -87,6 +87,18 @@ describe("Navbar", () => {
     const logoutModal = screen.getByRole("alertdialog");
     expect(logoutModal).toBeDefined();
   });
+  it("Cancel button closes logout modal", async () => {
+    const user = userEvent.setup();
+    await renderLoggedInNavbar();
+    const logoutModalToggleButton = screen.getByRole("button", {
+      name: "Logout",
+    });
+    await user.click(logoutModalToggleButton);
+    expect(screen.queryByRole("alertdialog")).not.toBeNull();
+    const cancelButton = screen.getByRole("button", { name: "Cancel" });
+    await user.click(cancelButton);
+    expect(screen.queryByRole("alertdialog")).toBeNull();
+  });
   it("Logout button calls handleLogout", async () => {
     const user = userEvent.setup();
     await renderLoggedInNavbar();
