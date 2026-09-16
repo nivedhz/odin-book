@@ -7,4 +7,4 @@ dotenv.config({ path: ".env.test" });
 dotenv.config({ path: ".env.local" });
 dotenv.config(); // .env as final fallback
 
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
