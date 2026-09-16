@@ -22,14 +22,19 @@ const Navbar = async () => {
         ) : (
           <>
             <li>
-              <Button variant={"ghost"} className={"py-4 px-6 cursor-pointer"}>
-                <Link href="/login">Login</Link>
-              </Button>
+              <Link href="/login">
+                <Button
+                  variant={"ghost"}
+                  className={"py-4 px-6 cursor-pointer"}
+                >
+                  Login
+                </Button>
+              </Link>
             </li>
             <li>
-              <Button className={"py-4 px-6 cursor-pointer"}>
-                <Link href="/sign-up">Sign Up</Link>
-              </Button>
+              <Link href="/sign-up">
+                <Button className={"py-4 px-6 cursor-pointer"}>Sign Up</Button>
+              </Link>
             </li>
           </>
         )}
