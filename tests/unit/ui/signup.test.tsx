@@ -75,4 +75,22 @@ describe("Sign Up", () => {
     await user.click(screen.getByRole("button", { name: "Sign Up" }));
     expect(handleSignUp).toHaveBeenCalled();
   });
+  it("Submit handles errors", async () => {
+    vi.mocked(handleSignUp).mockResolvedValue({
+      success: false,
+      message: "Sign Up failed",
+    });
+    const user = userEvent.setup();
+    render(<SignUpForm />);
+    const usernameInput = screen.getByLabelText("Username");
+    const emailInput = screen.getByLabelText("Email");
+    const passwordInput = screen.getByLabelText("Password");
+    await user.type(usernameInput, "lsdfjsldfjslf");
+    await user.type(emailInput, "Ri9wI@example.com");
+    await user.type(passwordInput, "password");
+    await user.click(screen.getByRole("button", { name: "Sign Up" }));
+    expect(handleSignUp).toHaveBeenCalled();
+    const errorMessage = screen.getByText("Sign Up failed");
+    expect(errorMessage).toBeDefined();
+  });
 });
