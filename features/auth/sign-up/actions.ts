@@ -14,12 +14,6 @@ const schema = z.object({
   password: z.string().min(3, "Password must be at least 3 characters"),
 });
 
-/**
- * Get the validated fields from the form data
- *
- * @param {FormData} formData - The form data to get the validated fields from
- * @returns {ValidatedFields} {username, email, password} - The validated fields
- * */
 function getFormData(formData: FormData): ValidatedFields {
   return {
     username: formData.get("username"),
@@ -28,12 +22,21 @@ function getFormData(formData: FormData): ValidatedFields {
   };
 }
 
-/**
- * Handles the sign up form submission
- *
- * @param {FormData} formData - The form data submitted from the sign up form
- * @returns {Promise<SignUpResponse>} {success, errors, message} - The response from the server
- * */
+async function createUser(data: {
+  email: string;
+  password: string;
+  username: string;
+}) {
+  const user = await prisma.user.create({
+    data: {
+      email: data.email,
+      password: await hashPassword(data.password),
+      username: data.username,
+    },
+  });
+  return user;
+}
+
 export async function handleSignUp(
   _prevState: SignUpResponse,
   formData: FormData,
@@ -59,13 +62,7 @@ export async function handleSignUp(
   }
 
   try {
-    const user = await prisma.user.create({
-      data: {
-        email: validatedFields.data.email,
-        password: await hashPassword(validatedFields.data.password),
-        username: validatedFields.data.username,
-      },
-    });
+    const user = await createUser(validatedFields.data);
     await createSession(user.id);
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError && err.code === "P2002") {

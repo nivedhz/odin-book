@@ -4,7 +4,7 @@ import z from "zod";
 import { InputData, LoginResponse } from "./types";
 import { prisma } from "@/lib/prisma";
 import { createSession } from "@/lib/auth/session";
-import { verifyPassword } from "@/lib/auth/password";
+import { comparePasswordWithHash } from "@/lib/auth/password";
 import { redirect } from "next/navigation";
 
 const schema = z.object({
@@ -12,25 +12,20 @@ const schema = z.object({
   password: z.string().min(3, "Password must be at least 3 characters"),
 });
 
-/**
- * Get the email and password from the FormData
- *
- * @param {FormData} formData - The form data to get the email and password from
- * @returns {InputData} {email, password} - The email and password
- * */
 function getFormData(formData: FormData): InputData {
   return {
     email: formData.get("email"),
     password: formData.get("password"),
   };
 }
+async function getUser(email: string) {
+  return await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+}
 
-/**
- * Handles the login form submission
- *
- * @param {FormData} formData - The form data to get the email and password from
- * @returns {LoginResponse} {success, errors} - The response from the server
- * */
 export async function handleLogin(
   _prevState: LoginResponse,
   formData: FormData,
@@ -51,12 +46,7 @@ export async function handleLogin(
   }
 
   try {
-    const user = await prisma.user.findUnique({
-      where: {
-        email: validatedFields.data.email,
-      },
-    });
-
+    const user = await getUser(validatedFields.data.email);
     if (!user) {
       return {
         success: false,
@@ -66,7 +56,7 @@ export async function handleLogin(
         message: "Incorrect email or password",
       };
     }
-    const passwordStatus = await verifyPassword(
+    const passwordStatus = await comparePasswordWithHash(
       validatedFields.data.password,
       user.password,
     );
