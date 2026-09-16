@@ -45,8 +45,14 @@ async function renderLoggedInNavbar() {
 describe("Navbar", () => {
   it("Renders", async () => {
     await renderLoggedOutNavbar();
-    const navbar = screen.getByRole("navigation");
-    expect(navbar).toBeDefined();
+    expect(screen.getByRole("navigation")).toBeDefined();
+    expect(
+      screen.getByRole("link", {
+        name: "Booko",
+      }),
+    ).toBeDefined();
+    expect(screen.getByRole("link", { name: "Login" })).toBeDefined();
+    expect(screen.getByRole("link", { name: "Sign Up" })).toBeDefined();
   });
   it("Sign up button rendered", async () => {
     await renderLoggedOutNavbar();
