@@ -44,3 +44,4 @@ next-env.d.ts
 startup.sh
 
 /lib/generated/prisma
+/tmp/
