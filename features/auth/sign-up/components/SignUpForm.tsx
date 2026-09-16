@@ -41,7 +41,7 @@ const SignUpForm = () => {
             <CardAction>
               <Link
                 href={"/login"}
-                className="text-muted-foreground hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground underline"
               >
                 Login
               </Link>
