@@ -28,7 +28,7 @@ async function verifyToken(token: string): Promise<JWTPayload | null> {
   }
 }
 
-async function setCookies(encryptedUserId: string) {
+async function setCookies(encryptedUserId: string): Promise<void> {
   const cookieStore = await cookies();
   cookieStore.set("session", encryptedUserId, {
     httpOnly: true,
