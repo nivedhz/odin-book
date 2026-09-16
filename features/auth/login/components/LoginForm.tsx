@@ -35,7 +35,9 @@ const LoginForm = () => {
           </Link>
           <Card className="w-full min-w-sm">
             <CardHeader>
-              <CardTitle>Welcome back...!</CardTitle>
+              <CardTitle>
+                <h1>Welcome back...!</h1>
+              </CardTitle>
               <CardDescription>
                 Enter the details below to login
               </CardDescription>
@@ -48,7 +50,7 @@ const LoginForm = () => {
                 </Link>
               </CardAction>
             </CardHeader>
-            <form action={action}>
+            <form action={action} aria-label="Login form">
               <CardContent>
                 <div className="flex flex-col gap-2 pb-4">
                   <div className="flex flex-col gap-6">
