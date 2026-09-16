@@ -34,7 +34,9 @@ const SignUpForm = () => {
         </Link>
         <Card className="w-full min-w-sm">
           <CardHeader>
-            <CardTitle>Sign up to Booko</CardTitle>
+            <CardTitle>
+              <h1>Sign up to Booko</h1>
+            </CardTitle>
             <CardDescription>
               Enter the details below to create your account
             </CardDescription>
@@ -47,7 +49,7 @@ const SignUpForm = () => {
               </Link>
             </CardAction>
           </CardHeader>
-          <form action={action}>
+          <form action={action} aria-label="Sign Up form">
             <CardContent>
               <div className="flex flex-col gap-2 pb-4">
                 <div className="flex flex-col gap-6">
