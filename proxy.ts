@@ -10,12 +10,14 @@ const publicRoutes = ["/login", "/sign-up"];
  * @returns {Promise<NextResponse<unknown>>} - the response object
  */
 export async function proxy(req: NextRequest): Promise<NextResponse<unknown>> {
-  const path = req.nextUrl.pathname;
-  const isPublicRoute = publicRoutes.some((route) => route === path);
+  const { pathname } = req.nextUrl;
+  const isPublicRoute = publicRoutes.some(
+    (route) => pathname === route || pathname.startsWith(`${route}/`),
+  );
 
-  const session = await getSession();
-  if (session && isPublicRoute) {
-    return NextResponse.rewrite(new URL("/_not-found", req.nextUrl));
+  if (isPublicRoute) {
+    const session = await getSession();
+    if (session) return NextResponse.rewrite(new URL("/_not-found/", req.url));
   }
 
   return NextResponse.next();
