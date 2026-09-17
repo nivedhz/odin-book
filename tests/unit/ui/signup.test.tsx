@@ -93,4 +93,18 @@ describe("Sign Up", () => {
     const errorMessage = screen.getByText("Sign Up failed");
     expect(errorMessage).toBeDefined();
   });
+  it("Doesn't allow unfilled forms", async () => {
+    vi.mocked(handleSignUp).mockResolvedValue({
+      success: false,
+      message: "Sign Up failed",
+    });
+    const user = userEvent.setup();
+    render(<SignUpForm />);
+    const usernameInput = screen.getByLabelText("Username");
+    const emailInput = screen.getByLabelText("Email");
+    await user.type(usernameInput, "lsdfjsldfjslf");
+    await user.type(emailInput, "Ri9wI@example.com");
+    await user.click(screen.getByRole("button", { name: "Sign Up" }));
+    expect(handleSignUp).not.toHaveBeenCalled();
+  });
 });
