@@ -40,7 +40,6 @@ export async function handleLogin(
   if (!validatedFields.success) {
     return {
       success: false,
-      errors: validatedFields.error,
       message: "Invalid form data",
     };
   }
@@ -50,9 +49,6 @@ export async function handleLogin(
     if (!user) {
       return {
         success: false,
-        errors: {
-          email: "Incorrect email or password",
-        },
         message: "Incorrect email or password",
       };
     }
@@ -63,21 +59,14 @@ export async function handleLogin(
     if (!passwordStatus) {
       return {
         success: false,
-        errors: {
-          password: "Incorrect email or password",
-        },
         message: "Incorrect email or password",
       };
     }
 
     await createSession(user.id);
-  } catch (err) {
+  } catch (_e) {
     return {
       success: false,
-      errors: {
-        _form: "Something went wrong on the server",
-        error: err,
-      },
       message: "Something went wrong on the server",
     };
   }

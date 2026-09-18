@@ -4,7 +4,7 @@ import z from "zod";
 import { SignUpResponse, ValidatedFields } from "./types";
 import { hashPassword } from "@/lib/auth/password";
 import { prisma } from "@/lib/prisma";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/client";
+import { Prisma } from "@/lib/generated/prisma/client";
 import { createSession } from "@/lib/auth/session";
 import { redirect } from "next/navigation";
 
@@ -56,7 +56,6 @@ export async function handleSignUp(
   if (!validatedFields.success) {
     return {
       success: false,
-      errors: validatedFields.error,
       message: "Invalid form data",
     };
   }
@@ -65,18 +64,17 @@ export async function handleSignUp(
     const user = await createUser(validatedFields.data);
     await createSession(user.id);
   } catch (err) {
-    if (err instanceof PrismaClientKnownRequestError && err.code === "P2002") {
+    if (
+      err instanceof Prisma.PrismaClientKnownRequestError &&
+      err.code === "P2002"
+    ) {
       return {
         success: false,
-        errors: {
-          _form: "Email or username already exists",
-        },
         message: "Email or username already exists",
       };
     } else {
       return {
         success: false,
-        errors: {},
         message: "Something went wrong on the server",
       };
     }
