@@ -18,7 +18,10 @@ const LogoutButton = () => {
     <AlertDialog>
       <AlertDialogTrigger
         render={
-          <button className="min-w-full text-start text-sm hover:bg-muted px-1 py-1 rounded-md flex items-center">
+          <button
+            className="min-w-full text-start text-sm hover:bg-muted px-1 py-1 rounded-md flex items-center"
+            data-label="logout"
+          >
             Logout
           </button>
         }

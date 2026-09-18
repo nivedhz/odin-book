@@ -14,7 +14,7 @@ const AccountAvatar = ({ username }: { username: string }) => {
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <button>
+          <button aria-label="account toggle">
             <Avatar>
               <AvatarFallback>{username[0].toUpperCase()}</AvatarFallback>
               <AvatarBadge className="bg-green-500 animate-pulse" />

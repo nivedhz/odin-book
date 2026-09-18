@@ -45,14 +45,14 @@ async function renderLoggedInNavbar() {
 describe("Navbar", () => {
   it("Renders", async () => {
     await renderLoggedOutNavbar();
-    expect(screen.getByRole("navigation")).toBeDefined();
+    expect(screen.getByRole("navigation")).toBeInTheDocument();
     expect(
       screen.getByRole("link", {
         name: "Booko",
       }),
-    ).toBeDefined();
-    expect(screen.getByRole("link", { name: "Login" })).toBeDefined();
-    expect(screen.getByRole("link", { name: "Sign Up" })).toBeDefined();
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Login" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Sign Up" })).toBeInTheDocument();
   });
   it("Sign up button rendered", async () => {
     await renderLoggedOutNavbar();
@@ -77,30 +77,24 @@ describe("Navbar", () => {
     expect(loginButton.getAttribute("href")).toBe("/login");
   });
   it("Logout button rendered", async () => {
+    const user = userEvent.setup();
     await renderLoggedInNavbar();
-    const logoutFormToggleButton = screen.getByRole("button", {
-      name: "Logout",
-    });
-    expect(logoutFormToggleButton).toBeDefined();
+    await user.click(screen.getByRole("button", { name: "account toggle" }));
+    expect(await screen.findByRole("button", { name: "Logout" })).toBeDefined();
   });
   it("logout button toggles logut modal", async () => {
     const user = userEvent.setup();
     await renderLoggedInNavbar();
-    const logoutModalToggleButton = screen.getByRole("button", {
-      name: "Logout",
-    });
-    await user.click(logoutModalToggleButton);
-    const logoutModal = screen.getByRole("alertdialog");
-    expect(logoutModal).toBeDefined();
+    await user.click(screen.getByRole("button", { name: "account toggle" }));
+    await user.click(await screen.findByRole("button", { name: "Logout" }));
+    expect(await screen.findByRole("alertdialog")).not.toBeNull();
   });
   it("Cancel button closes logout modal", async () => {
     const user = userEvent.setup();
     await renderLoggedInNavbar();
-    const logoutModalToggleButton = screen.getByRole("button", {
-      name: "Logout",
-    });
-    await user.click(logoutModalToggleButton);
-    expect(screen.queryByRole("alertdialog")).not.toBeNull();
+    await user.click(screen.getByRole("button", { name: "account toggle" }));
+    await user.click(await screen.findByRole("button", { name: "Logout" }));
+    expect(await screen.findByRole("alertdialog")).not.toBeNull();
     const cancelButton = screen.getByRole("button", { name: "Cancel" });
     await user.click(cancelButton);
     expect(screen.queryByRole("alertdialog")).toBeNull();
@@ -108,10 +102,9 @@ describe("Navbar", () => {
   it("Logout button calls handleLogout", async () => {
     const user = userEvent.setup();
     await renderLoggedInNavbar();
-    const logoutModalToggleButton = screen.getByRole("button", {
-      name: "Logout",
-    });
-    await user.click(logoutModalToggleButton);
+    await user.click(screen.getByRole("button", { name: "account toggle" }));
+    await user.click(await screen.findByRole("button", { name: "Logout" }));
+    expect(await screen.findByRole("alertdialog")).not.toBeNull();
     const logoutButton = screen.getByRole("button", { name: "Logout" });
     await user.click(logoutButton);
     expect(handleLogout).toHaveBeenCalled();
