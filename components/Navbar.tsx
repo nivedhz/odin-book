@@ -2,6 +2,7 @@ import { getSession } from "@/lib/auth/session";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import AccountAvatar from "./AccountAvatar";
+import { Plus } from "lucide-react";
 
 const Navbar = async () => {
   const session = await getSession();
@@ -18,6 +19,10 @@ const Navbar = async () => {
       <ul className="flex gap-4">
         {session ? (
           <li className="flex gap-4 items-center">
+            <Button variant={"ghost"} className={"flex items-center gap-2"}>
+              <Plus />
+              Create
+            </Button>
             <AccountAvatar username={username} />
           </li>
         ) : (
