@@ -46,7 +46,7 @@ export async function handleSignUp(
 
   try {
     const user = await createUser(validatedFields.data);
-    await createSession(user.id);
+    await createSession(user.id, user.username);
   } catch (err) {
     if (
       err instanceof Prisma.PrismaClientKnownRequestError &&
