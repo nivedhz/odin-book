@@ -41,7 +41,7 @@ async function setCookies(encryptedUserId: string): Promise<void> {
 export async function createSession(userId: string): Promise<void> {
   const encryptedUserId = await signToken({ userId });
 
-  setCookies(encryptedUserId);
+  await setCookies(encryptedUserId);
 }
 
 export async function deleteSession(): Promise<void> {
