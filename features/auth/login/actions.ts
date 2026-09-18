@@ -2,10 +2,10 @@
 
 import z from "zod";
 import { InputData, LoginResponse } from "./types";
-import { prisma } from "@/lib/prisma";
 import { createSession } from "@/lib/auth/session";
 import { comparePasswordWithHash } from "@/lib/auth/password";
 import { redirect } from "next/navigation";
+import { getUser } from "./queries";
 
 const schema = z.object({
   email: z.email("Invalid email address"),
@@ -17,13 +17,6 @@ function getFormData(formData: FormData): InputData {
     email: formData.get("email"),
     password: formData.get("password"),
   };
-}
-async function getUser(email: string) {
-  return await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  });
 }
 
 export async function handleLogin(
@@ -63,7 +56,7 @@ export async function handleLogin(
       };
     }
 
-    await createSession(user.id);
+    await createSession(user.id, user.username);
   } catch (_e) {
     return {
       success: false,

@@ -2,11 +2,10 @@
 
 import z from "zod";
 import { SignUpResponse, ValidatedFields } from "./types";
-import { hashPassword } from "@/lib/auth/password";
-import { prisma } from "@/lib/prisma";
 import { Prisma } from "@/lib/generated/prisma/client";
 import { createSession } from "@/lib/auth/session";
 import { redirect } from "next/navigation";
+import { createUser } from "./queries";
 
 const schema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
@@ -20,21 +19,6 @@ function getFormData(formData: FormData): ValidatedFields {
     email: formData.get("email"),
     password: formData.get("password"),
   };
-}
-
-async function createUser(data: {
-  email: string;
-  password: string;
-  username: string;
-}) {
-  const user = await prisma.user.create({
-    data: {
-      email: data.email,
-      password: await hashPassword(data.password),
-      username: data.username,
-    },
-  });
-  return user;
 }
 
 export async function handleSignUp(
