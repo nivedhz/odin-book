@@ -11,7 +11,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
 import { handleLogout } from "@/features/home/actions";
 
 const LogoutButton = () => {
@@ -19,9 +18,9 @@ const LogoutButton = () => {
     <AlertDialog>
       <AlertDialogTrigger
         render={
-          <Button variant="destructive" className={"py-4 px-6 cursor-pointer"}>
+          <button className="min-w-full text-start text-sm hover:bg-muted px-1 py-1 rounded-md flex items-center">
             Logout
-          </Button>
+          </button>
         }
       />
       <AlertDialogContent>
