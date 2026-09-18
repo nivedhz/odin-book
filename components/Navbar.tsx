@@ -17,7 +17,7 @@ const Navbar = async () => {
       <ul className="flex gap-4">
         {session ? (
           <li className="flex gap-4 items-center">
-            <p>{session?.username as string}</p>
+            <p>{String(session.username)}</p>
             <LogoutButton />
           </li>
         ) : (
