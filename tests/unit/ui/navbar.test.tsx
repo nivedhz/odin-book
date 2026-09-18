@@ -82,6 +82,12 @@ describe("Navbar", () => {
     await user.click(screen.getByRole("button", { name: "account toggle" }));
     expect(await screen.findByRole("button", { name: "Logout" })).toBeDefined();
   });
+  it("Create post button rendered", async () => {
+    await renderLoggedInNavbar();
+    expect(
+      await screen.findByRole("button", { name: "Create Post" }),
+    ).toBeDefined();
+  });
   it("logout button toggles logut modal", async () => {
     const user = userEvent.setup();
     await renderLoggedInNavbar();

@@ -19,7 +19,11 @@ const Navbar = async () => {
       <ul className="flex gap-4">
         {session ? (
           <li className="flex gap-4 items-center">
-            <Button variant={"ghost"} className={"flex items-center gap-2"}>
+            <Button
+              variant={"ghost"}
+              className={"flex items-center gap-2"}
+              aria-label="Create Post"
+            >
               <Plus />
               Create
             </Button>
