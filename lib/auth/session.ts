@@ -38,8 +38,11 @@ async function setCookies(encryptedUserId: string): Promise<void> {
   });
 }
 
-export async function createSession(userId: string): Promise<void> {
-  const encryptedUserId = await signToken({ userId });
+export async function createSession(
+  userId: string,
+  username: string,
+): Promise<void> {
+  const encryptedUserId = await signToken({ userId, username });
 
   await setCookies(encryptedUserId);
 }
