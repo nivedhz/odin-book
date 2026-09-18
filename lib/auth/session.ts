@@ -22,8 +22,7 @@ async function verifyToken(token: string): Promise<JWTPayload | null> {
       algorithms: ["HS256"],
     });
     return payload;
-  } catch (err) {
-    console.error(err);
+  } catch (_err) {
     return null;
   }
 }
