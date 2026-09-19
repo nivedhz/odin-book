@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import { getSession } from "@/lib/auth/session";
 import { handleLogout } from "@/features/home/actions";
 import userEvent from "@testing-library/user-event";
+import { redirect } from "next/navigation";
 
 vi.mock("@/lib/auth/session", () => ({
   getSession: vi.fn(),
@@ -19,6 +20,9 @@ vi.mock("next/link", () => ({
     children: React.ReactNode;
     href: string;
   }) => <a href={href}>{children}</a>,
+}));
+vi.mock("next/navigation", () => ({
+  redirect: vi.fn(),
 }));
 
 afterEach(() => {
@@ -107,6 +111,7 @@ describe("Navbar", () => {
   });
   it("Logout button calls handleLogout", async () => {
     const user = userEvent.setup();
+    vi.mocked(redirect).mockResolvedValue(null as never);
     await renderLoggedInNavbar();
     await user.click(screen.getByRole("button", { name: "account toggle" }));
     await user.click(await screen.findByRole("button", { name: "Logout" }));
