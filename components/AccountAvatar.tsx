@@ -16,7 +16,7 @@ const AccountAvatar = ({ username }: { username: string }) => {
         render={
           <button aria-label="account toggle">
             <Avatar>
-              <AvatarFallback>{username[0].toUpperCase()}</AvatarFallback>
+              <AvatarFallback>{username[0]}</AvatarFallback>
               <AvatarBadge className="bg-green-500 animate-pulse" />
             </Avatar>
           </button>
