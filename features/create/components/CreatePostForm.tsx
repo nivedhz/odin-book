@@ -14,7 +14,7 @@ const CreatePostForm = () => {
     message: "",
   });
   return (
-    <form action={action}>
+    <form action={action} aria-label="Create Post form">
       <CardContent>
         <div className="flex flex-col gap-2">
           <div className="flex flex-col gap-1">
