@@ -16,7 +16,6 @@ const CreatePost = () => {
           <Link
             href={"/"}
             className="text-sm text-muted-foreground flex items-center gap-2 hover:text-foreground"
-            aria-label="Go back home"
           >
             <ArrowLeft width={16} />
             Go back home
