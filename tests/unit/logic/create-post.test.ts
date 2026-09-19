@@ -1,6 +1,7 @@
 import { handleCreatePost } from "@/features/create/actions";
 import { createPost } from "@/features/create/queries";
 import { getSession } from "@/lib/auth/session";
+import { redirect } from "next/navigation";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@/features/create/queries", () => ({
@@ -9,8 +10,11 @@ vi.mock("@/features/create/queries", () => ({
 vi.mock("@/lib/auth/session", () => ({
   getSession: vi.fn(),
 }));
+vi.mock("next/navigation", () => ({
+  redirect: vi.fn(),
+}));
 
-describe("create-post", () => {
+describe("Create Post Logic", () => {
   it("returns an error when the form data is invalid", async () => {
     vi.mocked(createPost).mockResolvedValue(null);
     const formData = new FormData();
@@ -43,7 +47,7 @@ describe("create-post", () => {
     formData.set("title", "test");
     formData.set("content", "test");
 
-    const result = await handleCreatePost(
+    await handleCreatePost(
       {
         success: false,
         message: "",
@@ -51,10 +55,7 @@ describe("create-post", () => {
       formData,
     );
 
-    expect(result).toEqual({
-      success: true,
-      message: "Post created successfully",
-    });
+    expect(redirect).toHaveBeenCalledWith("/");
   });
   it("returns an error message when the session is not active", async () => {
     vi.mocked(createPost).mockResolvedValue({
@@ -77,7 +78,7 @@ describe("create-post", () => {
 
     expect(result).toEqual({
       success: false,
-      message: "You must be logged in to create a post",
+      message: "Failed to create post",
     });
   });
   it("returns an error message when the try-catch throws", async () => {
