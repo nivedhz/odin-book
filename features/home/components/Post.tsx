@@ -17,11 +17,13 @@ interface Props {
 
 const Post = ({ post }: Props) => {
   return (
-    <Card className="min-w-150">
+    <Card className="w-150">
       <PostHeader post={post} />
       <CardContent>
-        <CardTitle className="text-2xl font-bold">{post.title}</CardTitle>
-        <CardDescription>{post.content}</CardDescription>
+        <CardTitle className="text-2xl font-bold truncate">
+          {post.title}
+        </CardTitle>
+        <CardDescription className="truncate">{post.content}</CardDescription>
       </CardContent>
       <CardFooter>
         <div className="flex items-center gap-2">
