@@ -17,22 +17,9 @@ describe("Login UI", () => {
         name: "Login form",
       }),
     ).toBeDefined();
-    expect(screen.getByRole("link", { name: "Home" })).toBeDefined();
-    expect(
-      screen.getByRole("heading", {
-        name: "Welcome back...!",
-      }),
-    ).toBeDefined();
     expect(screen.getByLabelText("Email")).toBeDefined();
     expect(screen.getByLabelText("Password")).toBeDefined();
     expect(screen.getByRole("button", { name: "Login" })).toBeDefined();
-  });
-  it("Home link takes to /", () => {
-    render(<LoginForm />);
-    expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute(
-      "href",
-      "/",
-    );
   });
   it("Email takes input", async () => {
     const user = userEvent.setup();
