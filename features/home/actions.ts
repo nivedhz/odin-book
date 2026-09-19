@@ -1,10 +1,8 @@
 "use server";
 import { deleteSession } from "@/lib/auth/session";
+import { redirect } from "next/navigation";
 
 export async function handleLogout() {
   await deleteSession();
-  return {
-    success: true,
-    message: "Logout successful",
-  };
+  redirect("/login");
 }

@@ -12,7 +12,6 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { handleLogout } from "@/features/home/actions";
-import { redirect } from "next/navigation";
 
 const LogoutButton = () => {
   return (
@@ -42,7 +41,6 @@ const LogoutButton = () => {
           <AlertDialogAction
             onClick={async () => {
               await handleLogout();
-              redirect("/");
             }}
             variant={"destructive"}
             className={"cursor-pointer"}

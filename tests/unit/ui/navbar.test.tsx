@@ -38,10 +38,6 @@ async function renderLoggedInNavbar() {
   vi.mocked(getSession).mockResolvedValue({
     userId: "a very amazing userId",
   });
-  vi.mocked(handleLogout).mockResolvedValue({
-    success: true,
-    message: "Logout successful",
-  });
   render(await Navbar());
 }
 
