@@ -1,7 +1,7 @@
 "use server";
 
 import z from "zod";
-import { CreatePostState, PostFormData } from "./types";
+import { CreatePostResponse, InputData } from "./types";
 import { createPost } from "./queries";
 import { getSession } from "@/lib/auth/session";
 
@@ -10,21 +10,21 @@ const schema = z.object({
   content: z.string().min(3, "Content must be at least 3 characters"),
 });
 
-function getFormData(formData: FormData): PostFormData {
+function getFormData(formData: FormData): InputData {
   return {
-    title: String(formData.get("title")),
-    content: String(formData.get("content")),
+    title: formData.get("title"),
+    content: formData.get("content"),
   };
 }
 
 export async function handleCreatePost(
-  _prevState: CreatePostState,
+  _prevState: CreatePostResponse,
   formData: FormData,
-): Promise<CreatePostState> {
-  const { title, content } = getFormData(formData);
+): Promise<CreatePostResponse> {
+  const { title: rawTitle, content: rawContent } = getFormData(formData);
   const validatedFields = schema.safeParse({
-    title,
-    content,
+    title: rawTitle,
+    content: rawContent,
   });
 
   if (!validatedFields.success) {
@@ -36,11 +36,12 @@ export async function handleCreatePost(
 
   try {
     const session = await getSession();
-    if (!session)
+    if (!session) {
       return {
         success: false,
         message: "You must be logged in to create a post",
       };
+    }
     await createPost(
       validatedFields.data.title,
       validatedFields.data.content,
