@@ -40,8 +40,8 @@ const LogoutButton = () => {
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
-            onClick={() => {
-              handleLogout();
+            onClick={async () => {
+              await handleLogout();
               redirect("/");
             }}
             variant={"destructive"}
