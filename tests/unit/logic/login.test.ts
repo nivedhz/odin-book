@@ -20,7 +20,7 @@ vi.mock("next/navigation", () => ({
   redirect: vi.fn(),
 }));
 
-describe("Login", () => {
+describe("Login Logic", () => {
   it("returns an error when the form fields are invalid", async () => {
     vi.mocked(getUser).mockResolvedValue(null);
 

@@ -8,7 +8,7 @@ vi.mock("@/features/auth/login/actions", () => ({
   handleLogin: vi.fn(),
 }));
 
-describe("Login", () => {
+describe("Login UI", () => {
   it("Renders the login page with the correct components", () => {
     render(<LoginForm />);
 

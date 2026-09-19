@@ -21,7 +21,7 @@ vi.mock("next/navigation", () => ({
   redirect: vi.fn(),
 }));
 
-describe("Login", () => {
+describe("Sign Up Logic", () => {
   it("returns an error when the form data is invalid", async () => {
     const formData = new FormData();
     formData.set("password", "password");
@@ -123,6 +123,6 @@ describe("Login", () => {
 
     expect(createUser).toHaveBeenCalled();
     expect(createSession).toHaveBeenCalled();
-    expect(redirect).toHaveBeenCalled();
+    expect(redirect).toHaveBeenCalledWith("/");
   });
 });

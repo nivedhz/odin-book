@@ -45,7 +45,7 @@ async function renderLoggedInNavbar() {
   render(await Navbar());
 }
 
-describe("Navbar", () => {
+describe("Navbar UI", () => {
   it("Renders the navbar with the correct components in logged out state", async () => {
     await renderLoggedOutNavbar();
     expect(screen.getByRole("navigation")).toBeInTheDocument();

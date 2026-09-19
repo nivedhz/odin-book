@@ -8,7 +8,7 @@ vi.mock("@/features/create/actions", () => ({
   handleCreatePost: vi.fn(),
 }));
 
-describe("Create Post", () => {
+describe("Create Post UI", () => {
   it("Renders the create post page with the correct components", () => {
     render(<CreatePostForm />);
     expect(

@@ -8,7 +8,7 @@ vi.mock("@/features/auth/sign-up/actions", () => ({
   handleSignUp: vi.fn(),
 }));
 
-describe("Sign Up", () => {
+describe("Sign Up UI", () => {
   it("Renders the sign up page with the correct components", () => {
     render(<SignUpForm />);
 
