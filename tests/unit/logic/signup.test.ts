@@ -70,7 +70,7 @@ describe("Login", () => {
       message: "Email or username already exists",
     });
   });
-  it("returns an error when the user username already exists", async () => {
+  it("returns an error when the username already exists", async () => {
     const error = new Prisma.PrismaClientKnownRequestError(
       "Unique constraint failed on the fields: (`username`)",
       {

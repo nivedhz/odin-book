@@ -46,7 +46,7 @@ async function renderLoggedInNavbar() {
 }
 
 describe("Navbar", () => {
-  it("Renders", async () => {
+  it("Renders the navbar with the correct components in logged out state", async () => {
     await renderLoggedOutNavbar();
     expect(screen.getByRole("navigation")).toBeInTheDocument();
     expect(
@@ -57,7 +57,7 @@ describe("Navbar", () => {
     expect(screen.getByRole("link", { name: "Login" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Sign Up" })).toBeInTheDocument();
   });
-  it("Sign up button rendered", async () => {
+  it("Sign up button rendered in logged out state", async () => {
     await renderLoggedOutNavbar();
     const signUpButton = screen.getByRole("link", { name: "Sign Up" });
     expect(signUpButton).toBeDefined();
@@ -68,7 +68,7 @@ describe("Navbar", () => {
     const signUpButton = screen.getByRole("link", { name: "Sign Up" });
     expect(signUpButton.getAttribute("href")).toBe("/sign-up");
   });
-  it("Login button rendered", async () => {
+  it("Login button rendered in logged out state", async () => {
     await renderLoggedOutNavbar();
     const loginButton = screen.getByRole("link", { name: "Login" });
     expect(loginButton).toBeDefined();
@@ -79,13 +79,13 @@ describe("Navbar", () => {
     const loginButton = screen.getByRole("link", { name: "Login" });
     expect(loginButton.getAttribute("href")).toBe("/login");
   });
-  it("Logout button rendered", async () => {
+  it("Logout button rendered in logged in state", async () => {
     const user = userEvent.setup();
     await renderLoggedInNavbar();
     await user.click(screen.getByRole("button", { name: "account toggle" }));
     expect(await screen.findByRole("button", { name: "Logout" })).toBeDefined();
   });
-  it("Create post button rendered", async () => {
+  it("Create post button rendered in logged in state", async () => {
     await renderLoggedInNavbar();
     expect(
       await screen.findByRole("button", { name: "Create Post" }),

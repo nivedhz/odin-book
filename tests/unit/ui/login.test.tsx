@@ -9,7 +9,7 @@ vi.mock("@/features/auth/login/actions", () => ({
 }));
 
 describe("Login", () => {
-  it("Renders", () => {
+  it("Renders the login page with the correct components", () => {
     render(<LoginForm />);
 
     expect(
@@ -34,7 +34,7 @@ describe("Login", () => {
       "/",
     );
   });
-  it("Email Takes input", async () => {
+  it("Email takes input", async () => {
     const user = userEvent.setup();
     render(<LoginForm />);
     const emailInput = screen.getByLabelText("Email");
@@ -42,7 +42,7 @@ describe("Login", () => {
     await user.type(emailInput, "Ri9wI@example.com");
     expect(emailInput).toHaveValue("Ri9wI@example.com");
   });
-  it("Password Takes input", async () => {
+  it("Password takes input", async () => {
     const user = userEvent.setup();
     render(<LoginForm />);
     const passwordInput = screen.getByLabelText("Password");
@@ -64,7 +64,7 @@ describe("Login", () => {
     await user.click(screen.getByRole("button", { name: "Login" }));
     expect(handleLogin).toHaveBeenCalled();
   });
-  it("Submit handles errors", async () => {
+  it("Submit handles errors and displays error message", async () => {
     vi.mocked(handleLogin).mockResolvedValue({
       success: false,
       message: "Login failed",

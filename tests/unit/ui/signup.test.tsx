@@ -9,7 +9,7 @@ vi.mock("@/features/auth/sign-up/actions", () => ({
 }));
 
 describe("Sign Up", () => {
-  it("Renders", () => {
+  it("Renders the sign up page with the correct components", () => {
     render(<SignUpForm />);
 
     expect(
@@ -35,7 +35,7 @@ describe("Sign Up", () => {
       "/",
     );
   });
-  it("Username Takes input", async () => {
+  it("Username takes input", async () => {
     const user = userEvent.setup();
     render(<SignUpForm />);
     const usernameInput = screen.getByLabelText("Username");
@@ -43,7 +43,7 @@ describe("Sign Up", () => {
     await user.type(usernameInput, "lsdfjsldfjslf");
     expect(usernameInput).toHaveValue("lsdfjsldfjslf");
   });
-  it("Email Takes input", async () => {
+  it("Email takes input", async () => {
     const user = userEvent.setup();
     render(<SignUpForm />);
     const emailInput = screen.getByLabelText("Email");
@@ -51,7 +51,7 @@ describe("Sign Up", () => {
     await user.type(emailInput, "Ri9wI@example.com");
     expect(emailInput).toHaveValue("Ri9wI@example.com");
   });
-  it("Password Takes input", async () => {
+  it("Password takes input", async () => {
     const user = userEvent.setup();
     render(<SignUpForm />);
     const passwordInput = screen.getByLabelText("Password");
@@ -75,7 +75,7 @@ describe("Sign Up", () => {
     await user.click(screen.getByRole("button", { name: "Sign Up" }));
     expect(handleSignUp).toHaveBeenCalled();
   });
-  it("Submit handles errors", async () => {
+  it("Submit handles errors and shows error message", async () => {
     vi.mocked(handleSignUp).mockResolvedValue({
       success: false,
       message: "Sign Up failed",
