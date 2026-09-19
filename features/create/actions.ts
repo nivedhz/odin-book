@@ -4,6 +4,7 @@ import z from "zod";
 import { CreatePostResponse, InputData } from "./types";
 import { createPost } from "./queries";
 import { getSession } from "@/lib/auth/session";
+import { redirect } from "next/navigation";
 
 const schema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters"),
@@ -36,16 +37,13 @@ export async function handleCreatePost(
 
   try {
     const session = await getSession();
-    if (!session) {
-      return {
-        success: false,
-        message: "You must be logged in to create a post",
-      };
+    if (!session?.userId) {
+      redirect("/login");
     }
     await createPost(
       validatedFields.data.title,
       validatedFields.data.content,
-      String(session.userId),
+      session.userId as string,
     );
   } catch (_err) {
     return {
@@ -53,8 +51,5 @@ export async function handleCreatePost(
       message: "Failed to create post",
     };
   }
-  return {
-    success: true,
-    message: "Post created successfully",
-  };
+  redirect("/");
 }
