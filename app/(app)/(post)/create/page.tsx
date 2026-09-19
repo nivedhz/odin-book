@@ -12,7 +12,7 @@ const CreatePost = () => {
   return (
     <div className="flex items-center justify-center flex-1">
       <div className="">
-        <div className="">
+        <div className="flex">
           <Link
             href={"/"}
             className="text-sm text-muted-foreground flex items-center gap-2 hover:text-foreground"
