@@ -30,7 +30,7 @@ const CreatePostForm = () => {
             <Label htmlFor="content">Content</Label>
             <Textarea
               id="content"
-              className="max-h-60 resize-none scrollbar-none max-w-150"
+              className="resize-none scrollbar-none max-w-150 min-h-50"
               placeholder="What's on your mind?"
               name="content"
               required
