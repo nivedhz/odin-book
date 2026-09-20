@@ -52,7 +52,7 @@ model Vote {
   updatedAt DateTime @updatedAt
 
   @@unique([userId, postId])
-  @@map("likes")
+  @@map("votes")
 }
 
 model Comment {
