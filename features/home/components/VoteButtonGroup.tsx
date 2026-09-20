@@ -37,7 +37,7 @@ const VoteButtonGroup = ({
           size={16}
           className={upvoted ? "text-green-500 fill-green-500" : ""}
         />
-        {noOfVotes}
+        <span>{noOfVotes}</span>
       </Button>
       <Button
         variant={"outline"}
