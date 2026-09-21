@@ -9,17 +9,10 @@ import { Post } from "../types";
 interface Props {
   post: Post;
   votes: number;
-  userUpvoteStatus: boolean;
-  userDownvoteStatus: boolean;
+  userVoteStatus: number;
 }
-const VoteButtonGroup = ({
-  post,
-  votes,
-  userUpvoteStatus,
-  userDownvoteStatus,
-}: Props) => {
-  const [upvoted, setUpvoted] = useState(userUpvoteStatus);
-  const [downVoted, setDownvoted] = useState(userDownvoteStatus);
+const VoteButtonGroup = ({ post, votes, userVoteStatus }: Props) => {
+  const [voteStatus, setVoteStatus] = useState(userVoteStatus);
   const [noOfVotes, setNoOfVotes] = useState(votes);
 
   return (
@@ -27,30 +20,30 @@ const VoteButtonGroup = ({
       <Button
         variant={"outline"}
         onClick={async () => {
-          setDownvoted(false);
-          setUpvoted(!upvoted);
+          setVoteStatus((prev) => (prev === 1 ? 0 : 1));
           await handleUpvote(post.id);
-          setNoOfVotes(() => (upvoted ? noOfVotes - 1 : noOfVotes + 1));
+          setNoOfVotes(() =>
+            voteStatus === 1 ? noOfVotes - 1 : noOfVotes + 1,
+          );
         }}
       >
         <ArrowBigUp
           size={16}
-          className={upvoted ? "text-green-500 fill-green-500" : ""}
+          className={voteStatus === 1 ? "text-green-500 fill-green-500" : ""}
         />
         <span>{noOfVotes}</span>
       </Button>
       <Button
         variant={"outline"}
         onClick={async () => {
-          setUpvoted(false);
-          setDownvoted(!downVoted);
-          setNoOfVotes(() => (downVoted ? noOfVotes + 1 : noOfVotes - 1));
+          setVoteStatus((prev) => (prev === -1 ? 0 : -1));
+          setNoOfVotes(() => (voteStatus === -1 ? noOfVotes : noOfVotes - 1));
           await handleDownvote(post.id);
         }}
       >
         <ArrowBigDown
           size={16}
-          className={downVoted ? "text-red-500 fill-red-500" : ""}
+          className={voteStatus === -1 ? "text-red-500 fill-red-500" : ""}
         />
       </Button>
     </ButtonGroup>

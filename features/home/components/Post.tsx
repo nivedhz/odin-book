@@ -10,7 +10,7 @@ import { MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import VoteButtonGroup from "./VoteButtonGroup";
 import PostHeader from "./PostHeader";
-import { getVotes, isUserDownvoted, isUserUpvoted } from "../actions";
+import { getUserVote, getVotes } from "../actions";
 
 interface Props {
   post: Post;
@@ -18,8 +18,7 @@ interface Props {
 
 const Post = async ({ post }: Props) => {
   const noOfVotes = await getVotes(post.id);
-  const userUpvoteStatus = await isUserUpvoted(post.id);
-  const userDownvoteStatus = await isUserDownvoted(post.id);
+  const userVoteStatus = await getUserVote(post.id);
   return (
     <article>
       <Card className="w-150">
@@ -35,8 +34,7 @@ const Post = async ({ post }: Props) => {
             <VoteButtonGroup
               post={post}
               votes={noOfVotes}
-              userUpvoteStatus={userUpvoteStatus}
-              userDownvoteStatus={userDownvoteStatus}
+              userVoteStatus={userVoteStatus}
             />
             <Button variant={"outline"}>
               <MessageCircle size={16} />

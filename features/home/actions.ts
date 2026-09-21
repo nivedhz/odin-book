@@ -103,7 +103,7 @@ export async function getVotes(postId: string): Promise<number> {
   return numberOfUpvotes - numberOfDownvotes;
 }
 
-export async function isUserUpvoted(postId: string): Promise<boolean> {
+export async function getUserVote(postId: string): Promise<number> {
   const session = await getSession();
   if (!session?.userId) {
     redirect("/login");
@@ -115,25 +115,8 @@ export async function isUserUpvoted(postId: string): Promise<boolean> {
         userId,
         postId,
       },
-      type: "UPVOTE",
     },
   });
-  return !!vote;
-}
-export async function isUserDownvoted(postId: string): Promise<boolean> {
-  const session = await getSession();
-  if (!session?.userId) {
-    redirect("/login");
-  }
-  const userId = session.userId as string;
-  const vote = await prisma.vote.findUnique({
-    where: {
-      userId_postId: {
-        userId,
-        postId,
-      },
-      type: "DOWNVOTE",
-    },
-  });
-  return !!vote;
+  if (!vote) return 0;
+  return vote?.type === "UPVOTE" ? 1 : -1;
 }
