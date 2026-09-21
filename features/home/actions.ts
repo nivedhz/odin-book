@@ -16,8 +16,17 @@ export async function handleUpvote(postId: string): Promise<void> {
   }
   const userId = session.userId as string;
   try {
-    await prisma.vote.create({
-      data: {
+    await prisma.vote.upsert({
+      where: {
+        userId_postId: {
+          userId,
+          postId,
+        },
+      },
+      update: {
+        type: "UPVOTE",
+      },
+      create: {
         postId,
         userId,
         type: "UPVOTE",
@@ -46,8 +55,17 @@ export async function handleDownvote(postId: string): Promise<void> {
   }
   const userId = session.userId as string;
   try {
-    await prisma.vote.create({
-      data: {
+    await prisma.vote.upsert({
+      where: {
+        userId_postId: {
+          userId,
+          postId,
+        },
+      },
+      update: {
+        type: "DOWNVOTE",
+      },
+      create: {
         postId,
         userId,
         type: "DOWNVOTE",
