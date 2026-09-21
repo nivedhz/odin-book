@@ -1,5 +1,6 @@
 "use server";
 import { deleteSession, getSession } from "@/lib/auth/session";
+import { VoteType } from "@/lib/generated/prisma/enums";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
@@ -8,136 +9,51 @@ export async function handleLogout(): Promise<void> {
   redirect("/login");
 }
 
-export async function handleUpvote(postId: string): Promise<void> {
+export async function handleVote(
+  type: VoteType,
+  postId: string,
+): Promise<void> {
   const session = await getSession();
   if (!session?.userId) {
     redirect("/login");
   }
   const userId = session.userId as string;
-  const existingUpvote = await prisma.vote.findUnique({
+  const existingVote = await prisma.vote.findUnique({
     where: {
       userId_postId: {
         userId,
         postId,
       },
-      type: "UPVOTE",
     },
   });
-  const existingDownvote = await prisma.vote.findUnique({
-    where: {
-      userId_postId: {
-        userId,
-        postId,
-      },
-      type: "DOWNVOTE",
-    },
-  });
-  if (existingUpvote) {
+  if (existingVote) {
     await prisma.vote.delete({
       where: {
-        id: existingUpvote.id,
-        type: "UPVOTE",
+        id: existingVote.id,
       },
     });
-    return;
-  } else if (existingDownvote) {
-    await prisma.vote.delete({
-      where: {
-        id: existingDownvote.id,
-        type: "DOWNVOTE",
-      },
-    });
+    if (existingVote.type == type) return;
   }
 
   await prisma.vote.create({
     data: {
       postId,
       userId,
-      type: "UPVOTE",
+      type,
     },
   });
-}
-
-export async function handleDownvote(postId: string): Promise<void> {
-  const session = await getSession();
-  if (!session?.userId) {
-    redirect("/login");
-  }
-  const userId = session.userId as string;
-  const existingDownvote = await prisma.vote.findUnique({
-    where: {
-      userId_postId: {
-        userId,
-        postId,
-      },
-      type: "DOWNVOTE",
-    },
-  });
-  const existingUpvote = await prisma.vote.findUnique({
-    where: {
-      userId_postId: {
-        userId,
-        postId,
-      },
-      type: "UPVOTE",
-    },
-  });
-  if (existingDownvote) {
-    await prisma.vote.delete({
-      where: {
-        id: existingDownvote.id,
-        type: "DOWNVOTE",
-      },
-    });
-    return;
-  } else if (existingUpvote) {
-    await prisma.vote.delete({
-      where: {
-        id: existingUpvote.id,
-        type: "UPVOTE",
-      },
-    });
-  }
-  await prisma.vote.create({
-    data: {
-      postId,
-      userId,
-      type: "DOWNVOTE",
-    },
-  });
-}
-
-async function getNumberOfUpvotes(postId: string): Promise<number> {
-  const session = await getSession();
-  if (!session?.userId) {
-    redirect("/login");
-  }
-  const numberOfUpvotes = await prisma.vote.findMany({
-    where: {
-      postId,
-      type: "UPVOTE",
-    },
-  });
-  return numberOfUpvotes.length;
-}
-
-async function getNumberOfDownvotes(postId: string): Promise<number> {
-  const session = await getSession();
-  if (!session?.userId) {
-    redirect("/login");
-  }
-  const numberOfDownvotes = await prisma.vote.findMany({
-    where: {
-      postId,
-      type: "DOWNVOTE",
-    },
-  });
-  return numberOfDownvotes.length;
 }
 
 export async function getVotes(postId: string): Promise<number> {
-  const numberOfUpvotes = await getNumberOfUpvotes(postId);
-  const numberOfDownvotes = await getNumberOfDownvotes(postId);
+  const votes = await prisma.vote.findMany({
+    where: {
+      postId,
+    },
+  });
+  const numberOfUpvotes = votes.filter((vote) => vote.type === "UPVOTE").length;
+  const numberOfDownvotes = votes.filter(
+    (vote) => vote.type === "DOWNVOTE",
+  ).length;
   return numberOfUpvotes - numberOfDownvotes;
 }
 
