@@ -3,7 +3,7 @@ import { ArrowBigDown, ArrowBigUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { useState } from "react";
-import { getVotes, handleDownvote, handleUpvote } from "../actions";
+import { getVotes, handleVote } from "../actions";
 import { Post } from "../types";
 
 interface Props {
@@ -17,12 +17,12 @@ const VoteButtonGroup = ({ post, votes, userVoteStatus }: Props) => {
 
   const hancleUpvoteClick = async () => {
     setVoteStatus((prev) => (prev === 1 ? 0 : 1));
-    await handleUpvote(post.id);
+    await handleVote("UPVOTE", post.id);
     setNoOfVotes(await getVotes(post.id));
   };
   const handleDownvoteClick = async () => {
     setVoteStatus((prev) => (prev === -1 ? 0 : -1));
-    await handleDownvote(post.id);
+    await handleVote("DOWNVOTE", post.id);
     setNoOfVotes(await getVotes(post.id));
   };
   return (
