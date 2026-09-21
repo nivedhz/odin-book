@@ -1,6 +1,5 @@
 "use server";
 import { deleteSession, getSession } from "@/lib/auth/session";
-import { Prisma } from "@/lib/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
@@ -15,37 +14,48 @@ export async function handleUpvote(postId: string): Promise<void> {
     redirect("/login");
   }
   const userId = session.userId as string;
-  try {
-    await prisma.vote.upsert({
-      where: {
-        userId_postId: {
-          userId,
-          postId,
-        },
-      },
-      update: {
-        type: "UPVOTE",
-      },
-      create: {
-        postId,
+  const existingUpvote = await prisma.vote.findUnique({
+    where: {
+      userId_postId: {
         userId,
+        postId,
+      },
+      type: "UPVOTE",
+    },
+  });
+  const existingDownvote = await prisma.vote.findUnique({
+    where: {
+      userId_postId: {
+        userId,
+        postId,
+      },
+      type: "DOWNVOTE",
+    },
+  });
+  if (existingUpvote) {
+    await prisma.vote.delete({
+      where: {
+        id: existingUpvote.id,
         type: "UPVOTE",
       },
     });
-  } catch (err) {
-    if (
-      err instanceof Prisma.PrismaClientKnownRequestError &&
-      err.code === "P2002"
-    ) {
-      await prisma.vote.deleteMany({
-        where: {
-          postId,
-          userId,
-          type: "UPVOTE",
-        },
-      });
-    }
+    return;
+  } else if (existingDownvote) {
+    await prisma.vote.delete({
+      where: {
+        id: existingDownvote.id,
+        type: "DOWNVOTE",
+      },
+    });
   }
+
+  await prisma.vote.create({
+    data: {
+      postId,
+      userId,
+      type: "UPVOTE",
+    },
+  });
 }
 
 export async function handleDownvote(postId: string): Promise<void> {
@@ -54,37 +64,47 @@ export async function handleDownvote(postId: string): Promise<void> {
     redirect("/login");
   }
   const userId = session.userId as string;
-  try {
-    await prisma.vote.upsert({
-      where: {
-        userId_postId: {
-          userId,
-          postId,
-        },
-      },
-      update: {
-        type: "DOWNVOTE",
-      },
-      create: {
-        postId,
+  const existingDownvote = await prisma.vote.findUnique({
+    where: {
+      userId_postId: {
         userId,
+        postId,
+      },
+      type: "DOWNVOTE",
+    },
+  });
+  const existingUpvote = await prisma.vote.findUnique({
+    where: {
+      userId_postId: {
+        userId,
+        postId,
+      },
+      type: "UPVOTE",
+    },
+  });
+  if (existingDownvote) {
+    await prisma.vote.delete({
+      where: {
+        id: existingDownvote.id,
         type: "DOWNVOTE",
       },
     });
-  } catch (err) {
-    if (
-      err instanceof Prisma.PrismaClientKnownRequestError &&
-      err.code === "P2002"
-    ) {
-      await prisma.vote.deleteMany({
-        where: {
-          postId,
-          userId,
-          type: "DOWNVOTE",
-        },
-      });
-    }
+    return;
+  } else if (existingUpvote) {
+    await prisma.vote.delete({
+      where: {
+        id: existingUpvote.id,
+        type: "UPVOTE",
+      },
+    });
   }
+  await prisma.vote.create({
+    data: {
+      postId,
+      userId,
+      type: "DOWNVOTE",
+    },
+  });
 }
 
 async function getNumberOfUpvotes(postId: string): Promise<number> {
@@ -106,13 +126,13 @@ async function getNumberOfDownvotes(postId: string): Promise<number> {
   if (!session?.userId) {
     redirect("/login");
   }
-  const numberOfDownvotes = await prisma.vote.count({
+  const numberOfDownvotes = await prisma.vote.findMany({
     where: {
       postId,
       type: "DOWNVOTE",
     },
   });
-  return numberOfDownvotes;
+  return numberOfDownvotes.length;
 }
 
 export async function getVotes(postId: string): Promise<number> {
@@ -134,7 +154,8 @@ export async function getUserVote(postId: string): Promise<number> {
         postId,
       },
     },
+    include: { post: true },
   });
   if (!vote) return 0;
-  return vote?.type === "UPVOTE" ? 1 : -1;
+  return vote.type === "UPVOTE" ? 1 : vote.type === "DOWNVOTE" ? -1 : 0;
 }
