@@ -2,11 +2,15 @@ import { handleCreatePost } from "@/features/create/actions";
 import CreatePostForm from "@/features/create/components/CreatePostForm";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("@/features/create/actions", () => ({
   handleCreatePost: vi.fn(),
 }));
+
+afterEach(() => {
+  vi.resetAllMocks();
+});
 
 describe("Create Post UI", () => {
   it("Renders the create post page with the correct components", () => {

@@ -1,12 +1,15 @@
 import LoginForm from "@/features/auth/login/components/LoginForm";
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { userEvent } from "@testing-library/user-event";
 import { handleLogin } from "@/features/auth/login/actions";
 
 vi.mock("@/features/auth/login/actions", () => ({
   handleLogin: vi.fn(),
 }));
+afterEach(() => {
+  vi.resetAllMocks();
+});
 
 describe("Login UI", () => {
   it("Renders the login page with the correct components", () => {
