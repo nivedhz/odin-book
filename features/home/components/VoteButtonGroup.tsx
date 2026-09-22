@@ -27,14 +27,22 @@ const VoteButtonGroup = ({ post, votes, userVoteStatus }: Props) => {
   };
   return (
     <ButtonGroup>
-      <Button variant={"outline"} onClick={hancleUpvoteClick}>
+      <Button
+        variant={"outline"}
+        onClick={hancleUpvoteClick}
+        aria-label={`Upvote ${post.title}`}
+      >
         <ArrowBigUp
           size={16}
           className={voteStatus === 1 ? "text-green-500 fill-green-500" : ""}
         />
         <span>{noOfVotes}</span>
       </Button>
-      <Button variant={"outline"} onClick={handleDownvoteClick}>
+      <Button
+        variant={"outline"}
+        onClick={handleDownvoteClick}
+        aria-label={`Downvote ${post.title}`}
+      >
         <ArrowBigDown
           size={16}
           className={voteStatus === -1 ? "text-red-500 fill-red-500" : ""}
