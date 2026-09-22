@@ -60,9 +60,9 @@ export async function getVotes(postId: string): Promise<number> {
 export async function getUserVote(postId: string): Promise<number> {
   const session = await getSession();
   if (!session?.userId) {
-    redirect("/login");
+    return 0;
   }
-  const userId = session.userId as string;
+  const userId = session?.userId as string;
   const vote = await prisma.vote.findUnique({
     where: {
       userId_postId: {
