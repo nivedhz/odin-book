@@ -70,7 +70,6 @@ export async function getUserVote(postId: string): Promise<number> {
         postId,
       },
     },
-    include: { post: true },
   });
   if (!vote) return 0;
   return vote.type === "UPVOTE" ? 1 : vote.type === "DOWNVOTE" ? -1 : 0;
