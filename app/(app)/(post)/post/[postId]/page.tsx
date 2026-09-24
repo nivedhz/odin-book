@@ -1,10 +1,121 @@
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { getUserVote, getVotes } from "@/features/home/actions";
+import VoteButtonGroup from "@/features/home/components/VoteButtonGroup";
+import { findPost } from "@/features/post/queries";
+import { EllipsisVertical, MessageCircle } from "lucide-react";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { format } from "timeago.js";
+
 interface Props {
   params: Promise<{ postId: string }>;
 }
 
 const Post = async ({ params }: Props) => {
   const { postId } = await params;
-  return <div>{postId}</div>;
+  const post = await findPost(postId);
+  if (!post) {
+    return notFound();
+  }
+  const noOfVotes = await getVotes(post.id);
+  const userVoteStatus = await getUserVote(post.id);
+
+  return (
+    <div className="flex items-center justify-center py-5">
+      <Card className="min-w-150">
+        <CardHeader className="flex gap-2 items-center">
+          <Avatar>
+            <AvatarFallback>{post.author.username[0]}</AvatarFallback>
+          </Avatar>
+          <Link href={`/profile/${post.authorId}`}>
+            <p
+              className="text-lg font-semibold text-muted-foreground hover:text-foreground"
+              aria-label={`Post Author ${post.author.username}`}
+            >
+              u/{post.author.username}
+            </p>
+          </Link>
+          &middot;
+          <p
+            className="text-sm text-muted-foreground"
+            aria-label={`Post Created at ${format(post.createdAt)}`}
+          >
+            {format(post.createdAt)}
+          </p>
+        </CardHeader>
+        <CardContent className="max-w-150 flex flex-col gap-2">
+          <CardTitle>{post.title}</CardTitle>
+          <CardDescription>{post.content}</CardDescription>
+        </CardContent>
+        <CardFooter className="flex flex-col gap-4 items-start">
+          <div className="flex items-center gap-2">
+            <VoteButtonGroup
+              post={post}
+              votes={noOfVotes}
+              userVoteStatus={userVoteStatus}
+            />
+            <Link href={`/post/${post.id}`}>
+              <Button
+                variant={"outline"}
+                aria-label={`Comment on ${post.title}`}
+              >
+                <MessageCircle size={16} />
+              </Button>
+            </Link>
+          </div>
+          <CardTitle>Comments</CardTitle>
+          <div className="flex flex-col gap-4 w-full">
+            <div className="flex items-start gap-2 justify-between">
+              <div className="flex items-start gap-2">
+                <Avatar>
+                  <AvatarFallback>A</AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col">
+                  <div className="flex gap-2 text-muted-foreground">
+                    <p>some name</p>
+                    <p>&middot;</p>
+                    <p>some time</p>
+                  </div>
+                  <div className="pl-1 flex gap-2">
+                    <p>
+                      some comment some comment some comment some comment some
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  render={
+                    <Button variant={"ghost"} className={"rounded-full"}>
+                      <EllipsisVertical />
+                    </Button>
+                  }
+                />
+                <DropdownMenuContent>
+                  <DropdownMenuItem>Report</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
+        </CardFooter>
+      </Card>
+    </div>
+  );
 };
 
 export default Post;
