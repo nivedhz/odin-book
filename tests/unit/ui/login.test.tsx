@@ -1,5 +1,5 @@
 import LoginForm from "@/features/auth/login/components/LoginForm";
-import { render, screen } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { userEvent } from "@testing-library/user-event";
 import { handleLogin } from "@/features/auth/login/actions";
@@ -8,6 +8,7 @@ vi.mock("@/features/auth/login/actions", () => ({
   handleLogin: vi.fn(),
 }));
 afterEach(() => {
+  cleanup();
   vi.resetAllMocks();
 });
 

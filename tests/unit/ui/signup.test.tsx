@@ -1,5 +1,5 @@
 import SignUpForm from "@/features/auth/sign-up/components/SignUpForm";
-import { render, screen } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { userEvent } from "@testing-library/user-event";
 import { handleSignUp } from "@/features/auth/sign-up/actions";
@@ -9,6 +9,7 @@ vi.mock("@/features/auth/sign-up/actions", () => ({
 }));
 
 afterEach(() => {
+  cleanup();
   vi.resetAllMocks();
 });
 

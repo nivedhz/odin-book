@@ -1,6 +1,6 @@
 import { getUserVote, getVotes } from "@/features/home/actions";
 import Post from "@/features/home/components/Post";
-import { render, screen } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import { format } from "timeago.js";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -10,6 +10,7 @@ vi.mock("@/features/home/actions", () => ({
 }));
 
 afterEach(() => {
+  cleanup();
   vi.resetAllMocks();
 });
 
