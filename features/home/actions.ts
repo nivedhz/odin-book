@@ -1,8 +1,14 @@
 "use server";
 import { deleteSession, getSession } from "@/lib/auth/session";
 import { VoteType } from "@/lib/generated/prisma/enums";
-import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
+import {
+  createVote,
+  deleteVote,
+  findAllVotes,
+  findExistingVote,
+  findUserVote,
+} from "./queries";
 
 export async function handleLogout(): Promise<void> {
   await deleteSession();
@@ -18,38 +24,17 @@ export async function handleVote(
     redirect("/login");
   }
   const userId = session.userId as string;
-  const existingVote = await prisma.vote.findUnique({
-    where: {
-      userId_postId: {
-        userId,
-        postId,
-      },
-    },
-  });
+  const existingVote = await findExistingVote(userId, postId);
   if (existingVote) {
-    await prisma.vote.delete({
-      where: {
-        id: existingVote.id,
-      },
-    });
+    await deleteVote(existingVote.id);
     if (existingVote.type == type) return;
   }
 
-  await prisma.vote.create({
-    data: {
-      postId,
-      userId,
-      type,
-    },
-  });
+  await createVote({ postId, userId, type });
 }
 
 export async function getVotes(postId: string): Promise<number> {
-  const votes = await prisma.vote.findMany({
-    where: {
-      postId,
-    },
-  });
+  const votes = await findAllVotes(postId);
   const numberOfUpvotes = votes.filter((vote) => vote.type === "UPVOTE").length;
   const numberOfDownvotes = votes.filter(
     (vote) => vote.type === "DOWNVOTE",
@@ -63,14 +48,7 @@ export async function getUserVote(postId: string): Promise<number> {
     return 0;
   }
   const userId = session?.userId as string;
-  const vote = await prisma.vote.findUnique({
-    where: {
-      userId_postId: {
-        userId,
-        postId,
-      },
-    },
-  });
+  const vote = await findUserVote(userId, postId);
   if (!vote) return 0;
   return vote.type === "UPVOTE" ? 1 : vote.type === "DOWNVOTE" ? -1 : 0;
 }
