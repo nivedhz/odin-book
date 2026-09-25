@@ -16,7 +16,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { getUserVote, getVotes } from "@/features/home/actions";
 import VoteButtonGroup from "@/features/home/components/VoteButtonGroup";
-import { findPost } from "@/features/post/queries";
+import CommentForm from "@/features/post/components/CommentForm";
+import { findComments, findPost } from "@/features/post/queries";
 import { EllipsisVertical, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -27,37 +28,9 @@ interface Props {
 }
 
 const Post = async ({ params }: Props) => {
-  const comments = [
-    {
-      id: 1,
-      content: "some comment",
-      createdAt: new Date(),
-      author: {
-        id: 1,
-        username: "some name",
-      },
-    },
-    {
-      id: 2,
-      content: "some comment",
-      createdAt: new Date(),
-      author: {
-        id: 1,
-        username: "some name",
-      },
-    },
-    {
-      id: 3,
-      content: "some comment",
-      createdAt: new Date(),
-      author: {
-        id: 1,
-        username: "some name",
-      },
-    },
-  ];
   const { postId } = await params;
   const post = await findPost(postId);
+  const comments = await findComments(postId);
   if (!post) {
     return notFound();
   }
@@ -108,6 +81,7 @@ const Post = async ({ params }: Props) => {
             </Link>
           </div>
           <CardTitle>Comments</CardTitle>
+          <CommentForm post={post} />
           <div className="flex flex-col gap-4 w-full">
             {comments.map((comment) => {
               return (
