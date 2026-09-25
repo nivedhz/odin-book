@@ -27,6 +27,35 @@ interface Props {
 }
 
 const Post = async ({ params }: Props) => {
+  const comments = [
+    {
+      id: 1,
+      content: "some comment",
+      createdAt: new Date(),
+      author: {
+        id: 1,
+        username: "some name",
+      },
+    },
+    {
+      id: 2,
+      content: "some comment",
+      createdAt: new Date(),
+      author: {
+        id: 1,
+        username: "some name",
+      },
+    },
+    {
+      id: 3,
+      content: "some comment",
+      createdAt: new Date(),
+      author: {
+        id: 1,
+        username: "some name",
+      },
+    },
+  ];
   const { postId } = await params;
   const post = await findPost(postId);
   if (!post) {
@@ -80,37 +109,44 @@ const Post = async ({ params }: Props) => {
           </div>
           <CardTitle>Comments</CardTitle>
           <div className="flex flex-col gap-4 w-full">
-            <div className="flex items-start gap-2 justify-between">
-              <div className="flex items-start gap-2">
-                <Avatar>
-                  <AvatarFallback>A</AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col">
-                  <div className="flex gap-2 text-muted-foreground">
-                    <p>some name</p>
-                    <p>&middot;</p>
-                    <p>some time</p>
+            {comments.map((comment) => {
+              return (
+                <div
+                  className="flex items-start gap-2 justify-between"
+                  key={comment.id}
+                >
+                  <div className="flex items-start gap-2">
+                    <Avatar>
+                      <AvatarFallback>
+                        {comment.author.username[0]}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col">
+                      <div className="flex gap-2 text-muted-foreground">
+                        <p>u/{comment.author.username}</p>
+                        <p>&middot;</p>
+                        <p>{format(comment.createdAt)}</p>
+                      </div>
+                      <div className="pl-1 flex gap-2">
+                        <p>{comment.content}</p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="pl-1 flex gap-2">
-                    <p>
-                      some comment some comment some comment some comment some
-                    </p>
-                  </div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger
+                      render={
+                        <Button variant={"ghost"} className={"rounded-full"}>
+                          <EllipsisVertical />
+                        </Button>
+                      }
+                    />
+                    <DropdownMenuContent>
+                      <DropdownMenuItem>Report</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
-              </div>
-              <DropdownMenu>
-                <DropdownMenuTrigger
-                  render={
-                    <Button variant={"ghost"} className={"rounded-full"}>
-                      <EllipsisVertical />
-                    </Button>
-                  }
-                />
-                <DropdownMenuContent>
-                  <DropdownMenuItem>Report</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
+              );
+            })}
           </div>
         </CardFooter>
       </Card>
