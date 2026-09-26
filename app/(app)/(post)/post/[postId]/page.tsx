@@ -2,6 +2,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Card,
+  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
@@ -18,9 +19,10 @@ import { getUserVote, getVotes } from "@/features/home/actions";
 import VoteButtonGroup from "@/features/home/components/VoteButtonGroup";
 import CommentForm from "@/features/post/components/CommentForm";
 import { findComments, findPost } from "@/features/post/queries";
-import { EllipsisVertical, MessageCircle } from "lucide-react";
+import { getSession } from "@/lib/auth/session";
+import { Edit, EllipsisVertical, MessageCircle } from "lucide-react";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { format } from "timeago.js";
 
 interface Props {
@@ -28,6 +30,10 @@ interface Props {
 }
 
 const Post = async ({ params }: Props) => {
+  const session = await getSession();
+  if (!session?.userId) {
+    redirect("/login");
+  }
   const { postId } = await params;
   const post = await findPost(postId);
   const comments = await findComments(postId);
@@ -40,25 +46,36 @@ const Post = async ({ params }: Props) => {
   return (
     <div className="flex items-center justify-center py-5">
       <Card className="min-w-150">
-        <CardHeader className="flex gap-2 items-center">
-          <Avatar>
-            <AvatarFallback>{post.author.username[0]}</AvatarFallback>
-          </Avatar>
-          <Link href={`/profile/${post.authorId}`}>
+        <CardHeader className="flex gap-2 items-center justify-between">
+          <div className="flex gap-2 items-center">
+            <Avatar>
+              <AvatarFallback>{post.author.username[0]}</AvatarFallback>
+            </Avatar>
+            <Link href={`/profile/${post.authorId}`}>
+              <p
+                className="text-lg font-semibold text-muted-foreground hover:text-foreground"
+                aria-label={`Post Author ${post.author.username}`}
+              >
+                u/{post.author.username}
+              </p>
+            </Link>
+            &middot;
             <p
-              className="text-lg font-semibold text-muted-foreground hover:text-foreground"
-              aria-label={`Post Author ${post.author.username}`}
+              className="text-sm text-muted-foreground"
+              aria-label={`Post Created at ${format(post.createdAt)}`}
             >
-              u/{post.author.username}
+              {format(post.createdAt)}
             </p>
-          </Link>
-          &middot;
-          <p
-            className="text-sm text-muted-foreground"
-            aria-label={`Post Created at ${format(post.createdAt)}`}
-          >
-            {format(post.createdAt)}
-          </p>
+          </div>
+          {post.authorId === session.userId && (
+            <CardAction>
+              <Link href={`/post/${post.id}/edit`}>
+                <Button variant={"outline"}>
+                  <Edit />
+                </Button>
+              </Link>
+            </CardAction>
+          )}
         </CardHeader>
         <CardContent className="max-w-150 flex flex-col gap-2">
           <CardTitle>{post.title}</CardTitle>
