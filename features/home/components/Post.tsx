@@ -29,6 +29,7 @@ const Post = async ({ post }: Props) => {
             <CardTitle
               className="text-2xl font-bold truncate"
               aria-label={`Post Title ${post.title}`}
+              aria-level={2}
               role="heading"
             >
               {post.title}
