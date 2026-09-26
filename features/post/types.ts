@@ -10,3 +10,8 @@ export interface CommentResponse {
   success: boolean;
   message: string;
 }
+
+export interface PostEditResponse {
+  success: boolean;
+  message: string;
+}
