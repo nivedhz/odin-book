@@ -29,13 +29,13 @@ const page = async ({ params }: Props) => {
         <CardHeader>
           <CardTitle>Profile</CardTitle>
           {session?.userId === user.id && (
-            <CardAction>
-              <Button size={"icon"} variant={"outline"}>
-                <Link href={`/profile/${user.id}/edit`}>
+            <Link href={`/profile/${user.id}/edit`}>
+              <CardAction>
+                <Button size={"icon"} variant={"outline"}>
                   <Edit />
-                </Link>
-              </Button>
-            </CardAction>
+                </Button>
+              </CardAction>
+            </Link>
           )}
         </CardHeader>
         <CardContent>
