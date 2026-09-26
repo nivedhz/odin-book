@@ -48,3 +48,15 @@ export async function createComment(
     },
   });
 }
+
+export async function updatePost(title: string, content: string, id: string) {
+  return await prisma.post.update({
+    where: {
+      id,
+    },
+    data: {
+      title,
+      content,
+    },
+  });
+}
