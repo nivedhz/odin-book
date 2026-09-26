@@ -10,6 +10,9 @@ export async function getAllPosts(): Promise<Post[]> {
         },
       },
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 }
 export async function findExistingVote(
