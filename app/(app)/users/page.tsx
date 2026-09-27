@@ -3,12 +3,12 @@ import { Button } from "@/components/ui/button";
 import { getAllUsers } from "@/features/users/queries";
 import { getSession } from "@/lib/auth/session";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 
 const page = async () => {
   const session = await getSession();
-  if (!session) {
-    return notFound();
+  if (!session?.userId) {
+    redirect("/login");
   }
   const users = await getAllUsers(session.userId as string);
   return (
