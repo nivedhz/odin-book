@@ -7,6 +7,7 @@ import CreatePostButton from "./CreatePostButton";
 const Navbar = async () => {
   const session = await getSession();
   const username = String(session?.username);
+  const userId = String(session?.userId);
   return (
     <nav className="flex justify-between items-center px-20 py-4 border-b border-gray-200/20">
       <div className="">
@@ -20,7 +21,7 @@ const Navbar = async () => {
         {session ? (
           <li className="flex gap-4 items-center">
             <CreatePostButton />
-            <AccountAvatar username={username} />
+            <AccountAvatar username={username} userId={userId} />
           </li>
         ) : (
           <>
