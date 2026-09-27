@@ -1,3 +1,5 @@
+"use client";
+import { redirect } from "next/navigation";
 import LogoutButton from "./LogoutButton";
 import { Avatar, AvatarBadge, AvatarFallback } from "./ui/avatar";
 import {
@@ -9,7 +11,13 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 
-const AccountAvatar = ({ username }: { username: string }) => {
+const AccountAvatar = ({
+  username,
+  userId,
+}: {
+  username: string;
+  userId: string;
+}) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -29,7 +37,12 @@ const AccountAvatar = ({ username }: { username: string }) => {
             <Avatar>
               <AvatarFallback>{username[0].toUpperCase()}</AvatarFallback>
             </Avatar>
-            <div className="flex flex-col gap-1">
+            <div
+              className="flex flex-col gap-1"
+              onClick={() => {
+                redirect(`/profile/${userId}`);
+              }}
+            >
               <p className="text-sm font-medium leading-none">View Profile</p>
               <p className="text-xs leading-none text-muted-foreground">
                 {username}

@@ -13,6 +13,12 @@ export async function getAllUsers(userId: string): Promise<User[]> {
     },
     include: {
       followers: true,
+      posts: true,
+    },
+    orderBy: {
+      followers: {
+        _count: "desc",
+      },
     },
   });
 }

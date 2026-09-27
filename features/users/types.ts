@@ -1,3 +1,5 @@
+import { Post } from "../create/types";
+
 interface Follower {
   followerId: string;
   followingId: string;
@@ -9,4 +11,5 @@ export interface User {
   username: string;
   email: string;
   followers: Follower[];
+  posts: Post[];
 }
