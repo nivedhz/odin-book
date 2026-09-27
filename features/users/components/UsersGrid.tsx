@@ -5,7 +5,6 @@ import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth/session";
 import { isFollowing } from "../queries";
 import { User } from "../types";
-import UserFollowersCount from "./UserFollowersCount";
 
 interface Props {
   user: User;
@@ -40,7 +39,20 @@ const UsersGrid = async ({ user }: Props) => {
               </p>
             </Link>
           </div>
-          <UserFollowersCount user={user} />
+          <div className="flex gap-2 items-center">
+            <p
+              className="text-sm text-muted-foreground"
+              aria-label={`Post Created at ${user.email}`}
+            >
+              {user.followers.length} Followers
+            </p>
+            <p
+              className="text-sm text-muted-foreground"
+              aria-label={`Post Created at ${user.email}`}
+            >
+              {user.posts.length} {user.posts.length === 1 ? "Post" : "Posts"}
+            </p>
+          </div>
         </div>
       </div>
       <div className="">
