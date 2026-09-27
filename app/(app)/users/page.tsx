@@ -15,16 +15,22 @@ const page = async () => {
       <div className="px-20 flex flex-col gap-4 items-center">
         <div className="">
           <ul className="flex gap-4 items-center ">
-            <li className="hover:bg-muted-foreground/40 px-2 py-1 rounded-full">
-              <Link href="/" className="text-sm text-foreground">
+            <Link href="/" className="text-sm text-muted-foreground">
+              <li className="hover:bg-muted-foreground/40 px-2 py-1 rounded-full">
                 Posts
-              </Link>
-            </li>
-            <li className="bg-foreground px-2 py-1 rounded-full">
-              <Link href="/users" className="text-sm text-background ">
-                Users
-              </Link>
-            </li>
+              </li>
+            </Link>
+            <Link href="/users" className="text-sm text-background ">
+              <li className="bg-foreground px-2 py-1 rounded-full">Users</li>
+            </Link>
+            <Link
+              href="/followers-post"
+              className="text-sm text-muted-foreground "
+            >
+              <li className="hover:bg-muted-foreground/40 px-2 py-1 rounded-full">
+                Followers
+              </li>
+            </Link>
           </ul>
         </div>
         <div className="flex flex-col gap-4">
