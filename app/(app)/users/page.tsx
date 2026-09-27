@@ -1,5 +1,4 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import UsersGrid from "@/features/users/components/UsersGrid";
 import { getAllUsers } from "@/features/users/queries";
 import { getSession } from "@/lib/auth/session";
 import Link from "next/link";
@@ -30,33 +29,7 @@ const page = async () => {
         </div>
         <div className="flex flex-col gap-4">
           {users.map((user) => {
-            return (
-              <div
-                key={user.id}
-                className="min-w-150 p-4 flex items-center gap-4 bg-card rounded-2xl justify-between"
-              >
-                <div className="flex gap-4 items-center">
-                  <div className="">
-                    <Avatar>
-                      <AvatarFallback>{user.username[0]}</AvatarFallback>
-                    </Avatar>
-                  </div>
-                  <div className="">
-                    <Link href={`/profile/${user.id}`}>
-                      <p
-                        className="text-lg font-semibold text-muted-foreground hover:text-foreground"
-                        aria-label={`Post Author ${user.username}`}
-                      >
-                        u/{user.username}
-                      </p>
-                    </Link>
-                  </div>
-                </div>
-                <div className="">
-                  <Button>Follow</Button>
-                </div>
-              </div>
-            );
+            return <UsersGrid key={user.id} user={user} />;
           })}
         </div>
       </div>
