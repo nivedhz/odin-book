@@ -11,27 +11,47 @@ datasource db {
 }
 
 model User {
-  id       String    @id @default(cuid())
-  username String    @unique
-  email    String    @unique
+  id       String @id @default(cuid())
+  username String @unique
+  email    String @unique
   password String
-  posts    Post[]
-  comments Comment[]
-  votes    Vote[]
+
+  posts     Post[]
+  comments  Comment[]
+  votes     Vote[]
+  following Follow[]  @relation("followerRelation")
+  followers Follow[]  @relation("followingRelation")
 
   @@map("users")
 }
 
+model Follow {
+  followerId  String
+  followingId String
+
+  follower  User @relation("followerRelation", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("followingRelation", fields: [followingId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@id([followerId, followingId])
+  @@map("follows")
+}
+
 model Post {
-  id        String    @id @default(cuid())
-  title     String
-  content   String
-  author    User      @relation(fields: [authorId], references: [id])
-  authorId  String
-  comments  Comment[]
-  votes     Vote[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id      String @id @default(cuid())
+  title   String
+  content String
+
+  authorId String
+
+  author User @relation(fields: [authorId], references: [id])
+
+  comments Comment[]
+  votes    Vote[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("posts")
 }
@@ -42,12 +62,15 @@ enum VoteType {
 }
 
 model Vote {
-  id        String   @id @default(cuid())
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
-  type      VoteType
-  post      Post     @relation(fields: [postId], references: [id])
-  postId    String
+  id   String   @id @default(cuid())
+  type VoteType
+
+  userId String
+  postId String
+
+  user User @relation(fields: [userId], references: [id])
+  post Post @relation(fields: [postId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -56,12 +79,15 @@ model Vote {
 }
 
 model Comment {
-  id        String   @id @default(cuid())
-  content   String
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  String
-  post      Post     @relation(fields: [postId], references: [id])
-  postId    String
+  id      String @id @default(cuid())
+  content String
+
+  authorId String
+  postId   String
+
+  author User @relation(fields: [authorId], references: [id])
+  post   Post @relation(fields: [postId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
