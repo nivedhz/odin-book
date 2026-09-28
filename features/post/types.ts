@@ -1,3 +1,5 @@
+import { VoteType } from "@/lib/generated/prisma/enums";
+
 export interface Comment {
   id: string;
   content: string;
@@ -38,4 +40,11 @@ export interface Post {
 export interface InputData {
   title: FormDataEntryValue | null;
   content: FormDataEntryValue | null;
+}
+
+export interface Vote {
+  id?: string;
+  type: VoteType;
+  postId: string;
+  userId: string;
 }
