@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useActionState } from "react";
 import { handlePostEdit } from "../actions";
-import { Post } from "@/features/home/types";
+import { Post } from "../types";
 
 const PostEditForm = ({ post }: { post: Post }) => {
   const [state, action, _pending] = useActionState(handlePostEdit, {

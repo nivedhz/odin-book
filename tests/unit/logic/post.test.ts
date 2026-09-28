@@ -1,4 +1,4 @@
-import { getUserVote, getVotes, handleVote } from "@/features/home/actions";
+import { getUserVote, getVotes, handleVote } from "@/features/post/actions";
 import { getSession } from "@/lib/auth/session";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";

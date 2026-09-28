@@ -22,6 +22,9 @@ vi.mock("next/link", () => ({
 }));
 vi.mock("next/navigation", () => ({
   redirect: vi.fn(),
+  useRouter: vi.fn(() => ({
+    push: vi.fn(),
+  })),
 }));
 
 afterEach(() => {

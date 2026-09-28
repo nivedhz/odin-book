@@ -2,9 +2,9 @@
 import { ArrowBigDown, ArrowBigUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Post } from "../types";
-import { getVotes, handleVote } from "@/features/home/actions";
+import { getVotes, handleVote } from "@/features/post/actions";
 
 interface Props {
   post: Post;
@@ -14,22 +14,28 @@ interface Props {
 const VoteButtonGroup = ({ post, votes, userVoteStatus }: Props) => {
   const [voteStatus, setVoteStatus] = useState(userVoteStatus);
   const [noOfVotes, setNoOfVotes] = useState(votes);
+  const [isPending, startTransition] = useTransition();
 
-  const hancleUpvoteClick = async () => {
+  const handleUpvoteClick = async () => {
     setVoteStatus((prev) => (prev === 1 ? 0 : 1));
-    await handleVote("UPVOTE", post.id);
-    setNoOfVotes(await getVotes(post.id));
+    startTransition(async () => {
+      await handleVote("UPVOTE", post.id);
+      setNoOfVotes(await getVotes(post.id));
+    });
   };
   const handleDownvoteClick = async () => {
     setVoteStatus((prev) => (prev === -1 ? 0 : -1));
-    await handleVote("DOWNVOTE", post.id);
-    setNoOfVotes(await getVotes(post.id));
+    startTransition(async () => {
+      await handleVote("DOWNVOTE", post.id);
+      setNoOfVotes(await getVotes(post.id));
+    });
   };
   return (
     <ButtonGroup>
       <Button
         variant={"outline"}
-        onClick={hancleUpvoteClick}
+        onClick={handleUpvoteClick}
+        disabled={isPending}
         aria-label={`Upvote ${post.title}`}
       >
         <ArrowBigUp
@@ -41,6 +47,7 @@ const VoteButtonGroup = ({ post, votes, userVoteStatus }: Props) => {
       <Button
         variant={"outline"}
         onClick={handleDownvoteClick}
+        disabled={isPending}
         aria-label={`Downvote ${post.title}`}
       >
         <ArrowBigDown

@@ -10,7 +10,7 @@ import { MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import VoteButtonGroup from "./VoteButtonGroup";
 import PostHeader from "./PostHeader";
-import { getUserVote, getVotes } from "@/features/home/actions";
+import { getUserVote, getVotes } from "@/features/post/actions";
 import Link from "next/link";
 
 interface Props {

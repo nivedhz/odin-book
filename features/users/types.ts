@@ -1,4 +1,4 @@
-import { Post } from "../create/types";
+import { Post } from "@/features/post/types";
 
 interface Follower {
   followerId: string;
