@@ -45,6 +45,3 @@ startup.sh
 
 /lib/generated/prisma
 /tmp/
-/.agents/skills
-/AGENTS.md
-/skills-lock.json
