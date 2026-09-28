@@ -5,7 +5,7 @@ import { getSession } from "@/lib/auth/session";
 import { redirect } from "next/navigation";
 import { describe, expect, it, vi } from "vitest";
 
-vi.mock("@/features/create/queries", () => ({
+vi.mock("@/features/post/queries", () => ({
   createPost: vi.fn(),
 }));
 vi.mock("@/lib/auth/session", () => ({

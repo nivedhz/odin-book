@@ -4,7 +4,7 @@ import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("@/features/create/actions", () => ({
+vi.mock("@/features/post/actions", () => ({
   handleCreatePost: vi.fn(),
 }));
 
