@@ -7,8 +7,8 @@ const CreatePostButton = () => {
   const router = useRouter();
   return (
     <Button
-      variant={"ghost"}
-      className={"flex items-center gap-2"}
+      variant="ghost"
+      className="flex items-center gap-2"
       aria-label="Create Post"
       onClick={() => {
         router.push("/create");

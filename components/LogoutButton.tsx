@@ -19,7 +19,7 @@ const LogoutButton = () => {
       <AlertDialogTrigger
         render={
           <button
-            className="min-w-full text-start text-sm hover:bg-muted px-1 py-1 rounded-md flex items-center"
+            className="flex w-full items-center rounded-md px-2 py-1.5 text-start text-sm transition-colors hover:bg-muted"
             aria-label="Logout"
           >
             Logout
@@ -35,15 +35,15 @@ const LogoutButton = () => {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel className={"cursor-pointer"}>
+          <AlertDialogCancel className="cursor-pointer">
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={async () => {
               await handleLogout();
             }}
-            variant={"destructive"}
-            className={"cursor-pointer"}
+            variant="destructive"
+            className="cursor-pointer"
           >
             Logout
           </AlertDialogAction>

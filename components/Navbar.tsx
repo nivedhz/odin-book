@@ -3,46 +3,44 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import AccountAvatar from "./AccountAvatar";
 import CreatePostButton from "./CreatePostButton";
+import { ThemeToggle } from "./ThemeToggle";
 
 const Navbar = async () => {
   const session = await getSession();
   const username = String(session?.username);
   const userId = String(session?.userId);
   return (
-    <nav className="flex justify-between items-center px-20 py-4 border-b border-gray-200/20">
-      <div className="">
-        <Link href={"/"}>
-          <h1 className="text-2xl font-semibold tracking-[-0.02em] text-white">
+    <nav className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
+      <div className="mx-auto flex h-16 w-full max-w-5xl items-center justify-between px-4 sm:px-6">
+        <Link href="/">
+          <span className="font-serif text-2xl font-semibold tracking-tight">
             Booko
-          </h1>
+            <span aria-hidden="true" className="text-brand">
+              .
+            </span>
+          </span>
         </Link>
-      </div>
-      <ul className="flex gap-4">
-        {session ? (
-          <li className="flex gap-4 items-center">
-            <CreatePostButton />
-            <AccountAvatar username={username} userId={userId} />
-          </li>
-        ) : (
-          <>
-            <li>
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <ThemeToggle />
+          {session ? (
+            <>
+              <CreatePostButton />
+              <AccountAvatar username={username} userId={userId} />
+            </>
+          ) : (
+            <>
               <Link href="/login">
-                <Button
-                  variant={"ghost"}
-                  className={"py-4 px-6 cursor-pointer"}
-                >
+                <Button variant="ghost" size="sm">
                   Login
                 </Button>
               </Link>
-            </li>
-            <li>
               <Link href="/sign-up">
-                <Button className={"py-4 px-6 cursor-pointer"}>Sign Up</Button>
+                <Button size="sm">Sign Up</Button>
               </Link>
-            </li>
-          </>
-        )}
-      </ul>
+            </>
+          )}
+        </div>
+      </div>
     </nav>
   );
 };

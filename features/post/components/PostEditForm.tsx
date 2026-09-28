@@ -1,9 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { useActionState } from "react";
 import { handlePostEdit } from "../actions";
@@ -16,43 +16,53 @@ const PostEditForm = ({ post }: { post: Post }) => {
   });
 
   return (
-    <form action={action} aria-label="Create Post form">
-      <CardContent>
-        <div className="flex flex-col gap-2">
-          <Input type="text" name="postId" hidden value={post.id} />
-          <div className="flex flex-col gap-1">
-            <Label htmlFor="title">Title</Label>
-            <Input
-              id="title"
-              placeholder="The title of what's on your mind"
-              name="title"
-              defaultValue={post.title}
-              required
-            />
-          </div>
-          <div className="flex flex-col gap-1 pb-2">
-            <Label htmlFor="content">Content</Label>
-            <Textarea
-              id="content"
-              className="resize-none scrollbar-none max-w-150 min-h-50"
-              placeholder="What's on your mind?"
-              name="content"
-              defaultValue={post.content}
-              required
-            />
-          </div>
+    <form
+      action={action}
+      aria-label="Edit Post form"
+      className="flex min-h-[60vh] flex-col"
+    >
+      <Input type="hidden" name="postId" value={post.id} readOnly />
+      <Label htmlFor="title" className="sr-only">
+        Title
+      </Label>
+      <Input
+        id="title"
+        placeholder="Headline…"
+        name="title"
+        defaultValue={post.title}
+        required
+        className="h-auto border-0 bg-transparent px-0 py-2 font-serif text-3xl font-semibold tracking-tight placeholder:font-sans placeholder:text-2xl placeholder:font-normal placeholder:text-muted-foreground/60 focus-visible:ring-0 md:text-4xl dark:bg-transparent"
+      />
+      <Separator className="my-4" />
+      <Label htmlFor="content" className="sr-only">
+        Content
+      </Label>
+      <Textarea
+        id="content"
+        className="min-h-72 flex-1 border-0 bg-transparent px-0 py-2 text-base leading-relaxed placeholder:text-muted-foreground/60 focus-visible:ring-0 md:text-lg dark:bg-transparent"
+        placeholder="Begin writing…"
+        name="content"
+        defaultValue={post.content}
+        required
+      />
+      <div className="sticky bottom-0 flex items-center justify-between gap-4 border-t border-border bg-background/85 py-4 backdrop-blur">
+        <div aria-live="polite" className="min-w-0 flex-1">
           {state?.message && (
-            <p className={state.success ? "text-green-500" : "text-red-500"}>
+            <p
+              className={
+                state.success
+                  ? "truncate text-sm text-muted-foreground"
+                  : "truncate text-sm text-destructive"
+              }
+            >
               {state.message}
             </p>
           )}
         </div>
-      </CardContent>
-      <CardFooter className="flex flex-row-reverse">
-        <Button type="submit" className="btn btn-primary px-4 py-2">
+        <Button type="submit" className="rounded-full px-6">
           Edit
         </Button>
-      </CardFooter>
+      </div>
     </form>
   );
 };

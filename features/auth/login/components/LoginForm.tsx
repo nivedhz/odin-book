@@ -16,14 +16,14 @@ const LoginForm = () => {
     <>
       <form action={action} aria-label="Login form">
         <CardContent>
-          <div className="flex flex-col gap-2 pb-4">
-            <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="johndoe@example.com"
+                  placeholder="you@example.com…"
                   name="email"
                   required
                 />
@@ -36,13 +36,13 @@ const LoginForm = () => {
                   id="password"
                   type="password"
                   name="password"
-                  placeholder="········"
+                  placeholder="Enter your password…"
                   required
                 />
               </div>
             </div>
             {state.message && (
-              <p className="text-red-600 text-sm">{state.message}</p>
+              <p className="text-sm text-destructive">{state.message}</p>
             )}
           </div>
         </CardContent>

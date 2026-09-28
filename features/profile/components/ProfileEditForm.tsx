@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useActionState } from "react";
 import { handleProfileEdit } from "../actions";
 import { User } from "../types";
@@ -16,22 +17,33 @@ const ProfileEditForm = ({ user }: Props) => {
     success: false,
   });
   return (
-    <form action={action} className="flex flex-col gap-2">
-      <Input
-        type="text"
-        placeholder="Username"
-        name="username"
-        defaultValue={user.username}
-      />
-      <Input
-        type="email"
-        placeholder="Email"
-        className="mb-4"
-        name="email"
-        defaultValue={user.email}
-      />
-      {state.message && <p>{state.message}</p>}
-      <Button type="submit">Save</Button>
+    <form action={action} className="flex flex-col gap-4">
+      <div className="grid gap-2">
+        <Label htmlFor="username">Username</Label>
+        <Input
+          id="username"
+          type="text"
+          placeholder="Choose a username…"
+          name="username"
+          defaultValue={user.username}
+        />
+      </div>
+      <div className="grid gap-2">
+        <Label htmlFor="email">Email</Label>
+        <Input
+          id="email"
+          type="email"
+          placeholder="you@example.com…"
+          name="email"
+          defaultValue={user.email}
+        />
+      </div>
+      {state.message && (
+        <p className="text-sm text-destructive">{state.message}</p>
+      )}
+      <Button type="submit" className="w-full">
+        Save
+      </Button>
     </form>
   );
 };

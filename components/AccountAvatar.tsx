@@ -23,34 +23,36 @@ const AccountAvatar = ({
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <button aria-label="account toggle">
+          <button
+            aria-label="account toggle"
+            className="cursor-pointer rounded-full"
+          >
             <Avatar>
               <AvatarFallback>{username[0]}</AvatarFallback>
-              <AvatarBadge className="bg-green-500 animate-pulse" />
+              <AvatarBadge className="bg-brand animate-pulse" />
             </Avatar>
           </button>
         }
       />
-      <DropdownMenuContent className={"w-56"}>
+      <DropdownMenuContent className="w-56">
         <DropdownMenuGroup>
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuItem className={"flex gap-3 py-2"}>
-            <Avatar>
+          <DropdownMenuItem className="flex items-center gap-3 py-2">
+            <Avatar size="sm" className="shrink-0">
               <AvatarFallback>{username[0].toUpperCase()}</AvatarFallback>
             </Avatar>
             <div
-              className="flex flex-col gap-1"
+              className="flex min-w-0 flex-1 flex-col gap-1"
               onClick={() => {
                 router.push(`/profile/${userId}`);
               }}
             >
               <p className="text-sm font-medium leading-none">View Profile</p>
-              <p className="text-xs leading-none text-muted-foreground">
+              <p className="truncate text-xs leading-none text-muted-foreground">
                 {username}
               </p>
             </div>
           </DropdownMenuItem>
-          <DropdownMenuItem>Posts</DropdownMenuItem>
           <LogoutButton />
         </DropdownMenuGroup>
       </DropdownMenuContent>

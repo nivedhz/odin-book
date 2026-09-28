@@ -23,27 +23,29 @@ const SignUpForm = () => {
     message: "",
   });
   return (
-    <div className="flex items-center justify-center min-h-screen flex-col">
-      <div className="flex flex-col gap-4">
+    <div className="flex min-h-screen flex-col items-center justify-center px-4 py-10">
+      <div className="flex w-full max-w-sm flex-col gap-4">
         <Link
-          href={"/"}
-          className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground self-start"
+          href="/"
+          className="inline-flex w-fit items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
-          <ArrowLeft width={14} />
+          <ArrowLeft className="size-4" aria-hidden="true" />
           Home
         </Link>
-        <Card className="w-full min-w-sm">
+        <Card className="w-full rounded-2xl">
           <CardHeader>
             <CardTitle>
-              <h1>Sign up to Booko</h1>
+              <h1 className="font-serif text-2xl font-semibold tracking-tight">
+                Sign up to Booko
+              </h1>
             </CardTitle>
             <CardDescription>
-              Enter the details below to create your account
+              Enter your details below to create your account.
             </CardDescription>
             <CardAction>
               <Link
-                href={"/login"}
-                className="text-muted-foreground hover:text-foreground underline"
+                href="/login"
+                className="text-sm text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
               >
                 Login
               </Link>
@@ -51,14 +53,14 @@ const SignUpForm = () => {
           </CardHeader>
           <form action={action} aria-label="Sign Up form">
             <CardContent>
-              <div className="flex flex-col gap-2 pb-4">
-                <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4">
                   <div className="grid gap-2">
                     <Label htmlFor="username">Username</Label>
                     <Input
                       id="username"
                       type="text"
-                      placeholder="johndoe"
+                      placeholder="Choose a username…"
                       name="username"
                       required
                     />
@@ -68,7 +70,7 @@ const SignUpForm = () => {
                     <Input
                       id="email"
                       type="email"
-                      placeholder="johndoe@example.com"
+                      placeholder="you@example.com…"
                       name="email"
                       required
                     />
@@ -81,13 +83,13 @@ const SignUpForm = () => {
                       id="password"
                       type="password"
                       name="password"
-                      placeholder="········"
+                      placeholder="Create a password…"
                       required
                     />
                   </div>
                 </div>
                 {state.message && (
-                  <p className="text-red-600 text-sm">{state.message}</p>
+                  <p className="text-sm text-destructive">{state.message}</p>
                 )}
               </div>
             </CardContent>

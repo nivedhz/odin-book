@@ -23,7 +23,7 @@ const FollowButton = ({ followerId, followingId, followingStatus }: Props) => {
         }
       }}
       variant={following ? "outline" : "default"}
-      className={"cursor-pointer"}
+      className="shrink-0 cursor-pointer"
     >
       {following ? "Following" : "Follow"}
     </Button>

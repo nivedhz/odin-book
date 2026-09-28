@@ -20,42 +20,42 @@ const UsersGrid = async ({ user }: Props) => {
   return (
     <div
       key={user.id}
-      className="min-w-150 p-4 flex items-center gap-4 bg-card rounded-2xl justify-between"
+      className="flex w-full items-center justify-between gap-4 rounded-2xl border border-border bg-card p-4"
     >
-      <div className="flex gap-4 items-center">
-        <div className="">
-          <Avatar>
-            <AvatarFallback>{user.username[0]}</AvatarFallback>
-          </Avatar>
-        </div>
-        <div className="flex flex-col">
-          <div className="">
-            <Link href={`/profile/${user.id}`}>
-              <p
-                className="text-lg font-semibold hover:text-muted-foreground"
-                aria-label={`Post Author ${user.username}`}
-              >
-                u/{user.username}
-              </p>
-            </Link>
-          </div>
-          <div className="flex gap-2 items-center">
+      <div className="flex min-w-0 flex-1 items-center gap-3">
+        <Avatar className="shrink-0">
+          <AvatarFallback>
+            {user.username[0]?.toUpperCase()}
+          </AvatarFallback>
+        </Avatar>
+        <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+          <Link
+            href={`/profile/${user.id}`}
+            className="min-w-0 truncate text-base font-semibold transition-colors hover:text-muted-foreground"
+            aria-label={`User ${user.username}`}
+          >
+            u/{user.username}
+          </Link>
+          <div className="flex min-w-0 items-center gap-2">
             <p
-              className="text-sm text-muted-foreground"
-              aria-label={`Post Created at ${user.email}`}
+              className="truncate text-sm text-muted-foreground tabular-nums"
+              aria-label={`Followers of ${user.username}`}
             >
               {user.followers.length} Followers
             </p>
+            <span aria-hidden="true" className="text-muted-foreground">
+              ·
+            </span>
             <p
-              className="text-sm text-muted-foreground"
-              aria-label={`Post Created at ${user.email}`}
+              className="truncate text-sm text-muted-foreground tabular-nums"
+              aria-label={`Post count for ${user.username}`}
             >
               {user.posts.length} {user.posts.length === 1 ? "Post" : "Posts"}
             </p>
           </div>
         </div>
       </div>
-      <div className="">
+      <div className="shrink-0">
         <FollowButton
           followingId={user.id}
           followerId={session.userId as string}

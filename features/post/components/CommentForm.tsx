@@ -17,16 +17,20 @@ const CommentForm = ({ post }: Props) => {
   });
 
   return (
-    <form className="flex gap-2 min-w-full" action={action}>
-      <Input placeholder="Write a comment" className="flex-1" name="comment" />
+    <form
+      className="flex w-full items-center gap-2"
+      action={action}
+      aria-label="Write a comment"
+    >
       <Input
-        placeholder="Write a comment"
+        placeholder="Write a comment…"
         className="flex-1"
-        name="post"
-        hidden
-        value={post.id}
+        name="comment"
+        aria-label="Write a comment"
+        autoComplete="off"
       />
-      <Button type="submit" variant={"outline"}>
+      <input type="hidden" name="post" value={post.id} />
+      <Button type="submit" variant="outline" size="icon" aria-label="Send comment">
         <Send />
       </Button>
     </form>
