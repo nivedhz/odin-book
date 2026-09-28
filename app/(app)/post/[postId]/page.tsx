@@ -1,14 +1,6 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,15 +10,30 @@ import {
 import { getUserVote, getVotes } from "@/features/post/actions";
 import VoteButtonGroup from "@/features/post/components/VoteButtonGroup";
 import CommentForm from "@/features/post/components/CommentForm";
+import PostHeader from "@/features/post/components/PostHeader";
 import { findComments, findPost } from "@/features/post/queries";
 import { getSession } from "@/lib/auth/session";
-import { Edit, EllipsisVertical, MessageCircle } from "lucide-react";
+import { ArrowLeft, Edit, EllipsisVertical, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { format, TDate } from "timeago.js";
+import { format } from "timeago.js";
+import type { Metadata } from "next";
 
 interface Props {
   params: Promise<{ postId: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { postId } = await params;
+  const post = await findPost(postId);
+  if (!post) return { title: "Post not found" };
+  return {
+    title: post.title,
+    description:
+      post.content.length > 160
+        ? `${post.content.slice(0, 157)}…`
+        : post.content,
+  };
 }
 
 const Post = async ({ params }: Props) => {
@@ -44,89 +51,107 @@ const Post = async ({ params }: Props) => {
   const userVoteStatus = await getUserVote(post.id);
 
   return (
-    <div className="flex items-center justify-center py-5">
-      <Card className="min-w-150">
-        <CardHeader className="flex gap-2 items-center justify-between">
-          <div className="flex gap-2 items-center">
-            <Avatar>
-              <AvatarFallback>{post.author?.username[0]}</AvatarFallback>
-            </Avatar>
-            <Link href={`/profile/${post.authorId}`}>
-              <p
-                className="text-lg font-semibold text-muted-foreground hover:text-foreground"
-                aria-label={`Post Author ${post.author?.username}`}
-              >
-                u/{post.author?.username}
-              </p>
-            </Link>
-            &middot;
-            <p
-              className="text-sm text-muted-foreground"
-              aria-label={`Post Created at ${format(post.createdAt as TDate)}`}
-            >
-              {format(post.createdAt as TDate)}
-            </p>
+    <div className="mx-auto flex w-full max-w-3xl flex-col px-4 py-6 sm:px-6 sm:py-8">
+      <Link
+        href="/"
+        className="inline-flex w-fit items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+      >
+        <ArrowLeft className="size-4" aria-hidden="true" />
+        Back to feed
+      </Link>
+
+      <article
+        aria-label={`Post ${post.title}`}
+        className="mt-6 flex flex-col"
+      >
+        <div className="flex items-center justify-between gap-4">
+          <div className="min-w-0 flex-1">
+            <PostHeader post={post} />
           </div>
           {post.authorId === session.userId && (
-            <CardAction>
-              <Link href={`/post/${post.id}/edit`}>
-                <Button variant={"outline"}>
-                  <Edit />
-                </Button>
-              </Link>
-            </CardAction>
-          )}
-        </CardHeader>
-        <CardContent className="max-w-150 flex flex-col gap-2">
-          <CardTitle>{post.title}</CardTitle>
-          <CardDescription>{post.content}</CardDescription>
-        </CardContent>
-        <CardFooter className="flex flex-col gap-4 items-start">
-          <div className="flex items-center gap-2">
-            <VoteButtonGroup
-              post={post}
-              votes={noOfVotes}
-              userVoteStatus={userVoteStatus}
-            />
-            <Link href={`/post/${post.id}`}>
-              <Button
-                variant={"outline"}
-                aria-label={`Comment on ${post.title}`}
-              >
-                <MessageCircle size={16} />
-              </Button>
+            <Link
+              href={`/post/${post.id}/edit`}
+              aria-label="Edit post"
+              className={buttonVariants({ variant: "outline", size: "icon" })}
+            >
+              <Edit />
             </Link>
-          </div>
-          <CardTitle>Comments</CardTitle>
+          )}
+        </div>
+
+        <h1 className="mt-4 font-serif text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+          {post.title}
+        </h1>
+        <p className="mt-4 text-base leading-relaxed break-words whitespace-pre-wrap text-foreground/90">
+          {post.content}
+        </p>
+
+        <div className="mt-6 flex items-center gap-4 border-y border-border py-3">
+          <VoteButtonGroup
+            post={post}
+            votes={noOfVotes}
+            userVoteStatus={userVoteStatus}
+          />
+          <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
+            <MessageCircle className="size-4" aria-hidden="true" />
+            <span className="tabular-nums">
+              {comments.length}{" "}
+              {comments.length === 1 ? "comment" : "comments"}
+            </span>
+          </span>
+        </div>
+      </article>
+
+      <section aria-label="Comments" className="mt-8 flex flex-col">
+        <h2 className="text-lg font-semibold tracking-tight">
+          Comments{" "}
+          <span className="text-sm font-normal text-muted-foreground tabular-nums">
+            {comments.length}
+          </span>
+        </h2>
+        <div className="mt-4">
           <CommentForm post={post} />
-          <div className="flex flex-col gap-4 w-full">
+        </div>
+        {comments.length === 0 ? (
+          <p className="mt-6 rounded-2xl border border-border bg-card px-6 py-8 text-center text-sm text-muted-foreground">
+            No comments yet — start the conversation.
+          </p>
+        ) : (
+          <div className="mt-2 flex flex-col divide-y divide-border">
             {comments.map((comment) => {
               return (
                 <div
-                  className="flex items-start gap-2 justify-between"
+                  className="flex items-start justify-between gap-3 py-4"
                   key={comment.id}
                 >
-                  <div className="flex items-start gap-2">
-                    <Avatar>
+                  <div className="flex min-w-0 items-start gap-2.5">
+                    <Avatar size="sm">
                       <AvatarFallback>
-                        {comment.author.username[0]}
+                        {comment.author.username[0]?.toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
-                    <div className="flex flex-col">
-                      <div className="flex gap-2 text-muted-foreground">
-                        <p>u/{comment.author.username}</p>
-                        <p>&middot;</p>
-                        <p>{format(comment.createdAt)}</p>
+                    <div className="flex min-w-0 flex-col gap-1">
+                      <div className="flex flex-wrap items-center gap-x-2 text-sm">
+                        <p className="font-semibold">
+                          u/{comment.author.username}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {format(comment.createdAt)}
+                        </p>
                       </div>
-                      <div className="pl-1 flex gap-2">
-                        <p>{comment.content}</p>
-                      </div>
+                      <p className="text-sm leading-relaxed break-words whitespace-pre-wrap">
+                        {comment.content}
+                      </p>
                     </div>
                   </div>
                   <DropdownMenu>
                     <DropdownMenuTrigger
                       render={
-                        <Button variant={"ghost"} className={"rounded-full"}>
+                        <Button
+                          variant="ghost"
+                          size="icon-sm"
+                          aria-label="Comment options"
+                        >
                           <EllipsisVertical />
                         </Button>
                       }
@@ -139,8 +164,9 @@ const Post = async ({ params }: Props) => {
               );
             })}
           </div>
-        </CardFooter>
-      </Card>
+        )}
+      </section>
+      <Separator className="mt-8" />
     </div>
   );
 };

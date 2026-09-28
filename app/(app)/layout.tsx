@@ -1,20 +1,12 @@
-import type { Metadata } from "next";
-import "@/app/globals.css";
 import Navbar from "@/components/Navbar";
 import PillLinks from "@/components/PillLinks";
 
-export const metadata: Metadata = {
-  title: "Odin Book",
-  description: "A messaging app built for the odin project",
-};
-
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function AppLayout({ children }: LayoutProps<"/">) {
   return (
-    <main className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <Navbar />
-
       <PillLinks />
-      {children}
-    </main>
+      <main className="flex flex-1 flex-col">{children}</main>
+    </div>
   );
 }

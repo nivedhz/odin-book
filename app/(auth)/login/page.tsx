@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import {
   Card,
   CardAction,
@@ -9,27 +10,36 @@ import {
 import { ArrowLeft } from "lucide-react";
 import LoginForm from "@/features/auth/login/components/LoginForm";
 
+export const metadata: Metadata = {
+  title: "Login",
+  description: "Log in to your Booko account to join the reading room.",
+};
+
 const Login = () => {
   return (
-    <div className="flex items-center justify-center min-h-screen flex-col">
-      <div className="flex flex-col gap-4">
+    <div className="flex min-h-screen flex-col items-center justify-center px-4 py-10">
+      <div className="flex w-full max-w-sm flex-col gap-4">
         <Link
-          href={"/"}
-          className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground self-start"
+          href="/"
+          className="inline-flex w-fit items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
-          <ArrowLeft width={14} />
+          <ArrowLeft className="size-4" aria-hidden="true" />
           Home
         </Link>
-        <Card className="w-full min-w-sm">
+        <Card className="w-full rounded-2xl">
           <CardHeader>
             <CardTitle>
-              <h1>Welcome back...!</h1>
+              <h1 className="font-serif text-2xl font-semibold tracking-tight">
+                Welcome back
+              </h1>
             </CardTitle>
-            <CardDescription>Enter the details below to login</CardDescription>
+            <CardDescription>
+              Enter your details below to log in.
+            </CardDescription>
             <CardAction>
               <Link
-                href={"/sign-up"}
-                className="text-muted-foreground hover:text-foreground underline"
+                href="/sign-up"
+                className="text-sm text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
               >
                 Sign Up
               </Link>

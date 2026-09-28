@@ -1,6 +1,6 @@
 import Post from "@/features/post/components/Post";
 import { getAllPosts } from "@/features/home/queries";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -22,7 +22,9 @@ export default async function Home() {
           <p className="text-sm text-muted-foreground">
             Be the first to share what&apos;s on your mind.
           </p>
-          <Button render={<Link href="/create">Write a post</Link>} />
+          <Link href="/create" className={buttonVariants()}>
+            Write a post
+          </Link>
         </div>
       ) : (
         <div className="flex flex-col gap-4">

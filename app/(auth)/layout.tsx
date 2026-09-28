@@ -7,5 +7,9 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
-  return <main>{children}</main>;
+  return (
+    <main className="min-h-screen bg-background text-foreground">
+      {children}
+    </main>
+  );
 }
