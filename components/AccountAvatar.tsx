@@ -29,7 +29,7 @@ const AccountAvatar = ({
           >
             <Avatar>
               <AvatarFallback>{username[0]}</AvatarFallback>
-              <AvatarBadge className="bg-brand animate-pulse" />
+              <AvatarBadge className="bg-emerald-500 animate-pulse" />
             </Avatar>
           </button>
         }
