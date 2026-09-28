@@ -60,3 +60,27 @@ export async function updatePost(title: string, content: string, id: string) {
     },
   });
 }
+
+export async function getAllFollowingPosts(followerId: string) {
+  return await prisma.post.findMany({
+    where: {
+      author: {
+        followers: {
+          some: {
+            followerId: followerId,
+          },
+        },
+      },
+    },
+    include: {
+      author: {
+        select: {
+          username: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+}
