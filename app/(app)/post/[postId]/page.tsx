@@ -13,11 +13,18 @@ import CommentForm from "@/features/post/components/CommentForm";
 import PostHeader from "@/features/post/components/PostHeader";
 import { findComments, findPost } from "@/features/post/queries";
 import { getSession } from "@/lib/auth/session";
-import { ArrowLeft, Edit, EllipsisVertical, MessageCircle } from "lucide-react";
+import {
+  ArrowLeft,
+  Edit,
+  EllipsisVertical,
+  MessageCircle,
+  Trash,
+} from "lucide-react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { format } from "timeago.js";
 import type { Metadata } from "next";
+import PostDeleteButton from "@/features/post/components/PostDeleteButton";
 
 interface Props {
   params: Promise<{ postId: string }>;
@@ -60,22 +67,22 @@ const Post = async ({ params }: Props) => {
         Back to feed
       </Link>
 
-      <article
-        aria-label={`Post ${post.title}`}
-        className="mt-6 flex flex-col"
-      >
+      <article aria-label={`Post ${post.title}`} className="mt-6 flex flex-col">
         <div className="flex items-center justify-between gap-4">
           <div className="min-w-0 flex-1">
             <PostHeader post={post} />
           </div>
           {post.authorId === session.userId && (
-            <Link
-              href={`/post/${post.id}/edit`}
-              aria-label="Edit post"
-              className={buttonVariants({ variant: "outline", size: "icon" })}
-            >
-              <Edit />
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link
+                href={`/post/${post.id}/edit`}
+                aria-label="Edit post"
+                className={buttonVariants({ variant: "outline", size: "icon" })}
+              >
+                <Edit />
+              </Link>
+              <PostDeleteButton postId={post.id} />
+            </div>
           )}
         </div>
 
@@ -95,8 +102,7 @@ const Post = async ({ params }: Props) => {
           <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
             <MessageCircle className="size-4" aria-hidden="true" />
             <span className="tabular-nums">
-              {comments.length}{" "}
-              {comments.length === 1 ? "comment" : "comments"}
+              {comments.length} {comments.length === 1 ? "comment" : "comments"}
             </span>
           </span>
         </div>
