@@ -1,4 +1,3 @@
-import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -31,9 +30,7 @@ const page = async ({ params }: Props) => {
   const posts = await getUserPosts(user.id);
   const comments = await getUserComments(userId);
   return (
-    <>
-      <Navbar />
-      <div className="flex items-center justify-center flex-1">
+    <div className="flex items-center justify-center flex-1">
         <Card className="min-w-150">
           <CardHeader>
             <CardTitle>Profile</CardTitle>
@@ -73,7 +70,6 @@ const page = async ({ params }: Props) => {
           })}
         </Card>
       </div>
-    </>
   );
 };
 

@@ -15,7 +15,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { getUserVote, getVotes } from "@/features/home/actions";
+import { getUserVote, getVotes } from "@/features/post/actions";
 import VoteButtonGroup from "@/features/post/components/VoteButtonGroup";
 import CommentForm from "@/features/post/components/CommentForm";
 import { findComments, findPost } from "@/features/post/queries";
