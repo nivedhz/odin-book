@@ -1,5 +1,5 @@
-import { handleCreatePost } from "@/features/create/actions";
-import CreatePostForm from "@/features/create/components/CreatePostForm";
+import { handleCreatePost } from "@/features/post/actions";
+import CreatePostForm from "@/features/post/components/CreatePostForm";
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";

@@ -4,7 +4,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import CreatePostForm from "@/features/create/components/CreatePostForm";
+import CreatePostForm from "@/features/post/components/CreatePostForm";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 

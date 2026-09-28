@@ -1,5 +1,5 @@
 import { getUserVote, getVotes } from "@/features/home/actions";
-import Post from "@/features/home/components/Post";
+import Post from "@/features/post/components/Post";
 import { cleanup, render, screen } from "@testing-library/react";
 import { format } from "timeago.js";
 import { afterEach, describe, expect, it, vi } from "vitest";

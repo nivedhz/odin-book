@@ -1,4 +1,4 @@
-import Post from "@/features/home/components/Post";
+import Post from "@/features/post/components/Post";
 import { getAllFollowingPosts } from "@/features/post/queries";
 import { getSession } from "@/lib/auth/session";
 import { redirect } from "next/navigation";

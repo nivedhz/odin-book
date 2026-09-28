@@ -3,8 +3,8 @@ import { ArrowBigDown, ArrowBigUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { useState } from "react";
-import { getVotes, handleVote } from "../actions";
 import { Post } from "../types";
+import { getVotes, handleVote } from "@/features/home/actions";
 
 interface Props {
   post: Post;

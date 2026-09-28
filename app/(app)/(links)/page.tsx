@@ -1,4 +1,4 @@
-import Post from "@/features/home/components/Post";
+import Post from "@/features/post/components/Post";
 import { getAllPosts } from "@/features/home/queries";
 
 export default async function Home() {

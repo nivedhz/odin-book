@@ -1,5 +1,6 @@
-import { handleCreatePost } from "@/features/create/actions";
-import { createPost } from "@/features/create/queries";
+import { handleCreatePost } from "@/features/post/actions";
+import { createPost } from "@/features/post/queries";
+import { Post } from "@/features/post/types";
 import { getSession } from "@/lib/auth/session";
 import { redirect } from "next/navigation";
 import { describe, expect, it, vi } from "vitest";
@@ -39,7 +40,7 @@ describe("Create Post Logic", () => {
       title: "test",
       content: "test",
       authorId: "test",
-    });
+    } as Post);
     vi.mocked(getSession).mockResolvedValue({
       userId: "test",
     });
@@ -62,7 +63,7 @@ describe("Create Post Logic", () => {
       title: "test",
       content: "test",
       authorId: "test",
-    });
+    } as Post);
     vi.mocked(getSession).mockResolvedValue(null);
     const formData = new FormData();
     formData.set("title", "test");

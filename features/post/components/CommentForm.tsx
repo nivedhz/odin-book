@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Post } from "@/features/home/types";
+import { Post } from "@/features/post/types";
 import { Send } from "lucide-react";
 import { useActionState } from "react";
 import { handleComment } from "../actions";

@@ -1,6 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { Post } from "../home/types";
-import { Comment } from "./types";
+import { Comment, Post } from "./types";
 
 export async function findPost(postId: string): Promise<Post | null> {
   return await prisma.post.findUnique({
@@ -83,4 +82,20 @@ export async function getAllFollowingPosts(followerId: string) {
       createdAt: "desc",
     },
   });
+}
+
+export async function createPost(
+  title: string,
+  content: string,
+  authorId: string,
+): Promise<Post | null> {
+  const post = await prisma.post.create({
+    data: {
+      title,
+      content,
+      authorId,
+    },
+  });
+
+  return post;
 }

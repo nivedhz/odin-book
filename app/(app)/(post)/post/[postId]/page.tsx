@@ -16,14 +16,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { getUserVote, getVotes } from "@/features/home/actions";
-import VoteButtonGroup from "@/features/home/components/VoteButtonGroup";
+import VoteButtonGroup from "@/features/post/components/VoteButtonGroup";
 import CommentForm from "@/features/post/components/CommentForm";
 import { findComments, findPost } from "@/features/post/queries";
 import { getSession } from "@/lib/auth/session";
 import { Edit, EllipsisVertical, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { format } from "timeago.js";
+import { format, TDate } from "timeago.js";
 
 interface Props {
   params: Promise<{ postId: string }>;
@@ -49,22 +49,22 @@ const Post = async ({ params }: Props) => {
         <CardHeader className="flex gap-2 items-center justify-between">
           <div className="flex gap-2 items-center">
             <Avatar>
-              <AvatarFallback>{post.author.username[0]}</AvatarFallback>
+              <AvatarFallback>{post.author?.username[0]}</AvatarFallback>
             </Avatar>
             <Link href={`/profile/${post.authorId}`}>
               <p
                 className="text-lg font-semibold text-muted-foreground hover:text-foreground"
-                aria-label={`Post Author ${post.author.username}`}
+                aria-label={`Post Author ${post.author?.username}`}
               >
-                u/{post.author.username}
+                u/{post.author?.username}
               </p>
             </Link>
             &middot;
             <p
               className="text-sm text-muted-foreground"
-              aria-label={`Post Created at ${format(post.createdAt)}`}
+              aria-label={`Post Created at ${format(post.createdAt as TDate)}`}
             >
-              {format(post.createdAt)}
+              {format(post.createdAt as TDate)}
             </p>
           </div>
           {post.authorId === session.userId && (
