@@ -1,5 +1,5 @@
 import Post from "@/features/home/components/Post";
-import { getAllFollowerPosts } from "@/features/post/queries";
+import { getAllFollowingPosts } from "@/features/post/queries";
 import { getSession } from "@/lib/auth/session";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -9,7 +9,7 @@ const page = async () => {
   if (!session?.userId) {
     redirect("/login");
   }
-  const posts = await getAllFollowerPosts(session.userId as string);
+  const posts = await getAllFollowingPosts(session.userId as string);
   return (
     <main className="py-4">
       <div className="px-20 flex flex-col gap-4 items-center">
