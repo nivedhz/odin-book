@@ -1,16 +1,17 @@
 "use client";
 import { Plus } from "lucide-react";
 import { Button } from "./ui/button";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const CreatePostButton = () => {
+  const router = useRouter();
   return (
     <Button
       variant={"ghost"}
       className={"flex items-center gap-2"}
       aria-label="Create Post"
       onClick={() => {
-        redirect("/create");
+        router.push("/create");
       }}
     >
       <Plus />

@@ -1,5 +1,5 @@
 "use client";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import LogoutButton from "./LogoutButton";
 import { Avatar, AvatarBadge, AvatarFallback } from "./ui/avatar";
 import {
@@ -18,6 +18,7 @@ const AccountAvatar = ({
   username: string;
   userId: string;
 }) => {
+  const router = useRouter();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -40,7 +41,7 @@ const AccountAvatar = ({
             <div
               className="flex flex-col gap-1"
               onClick={() => {
-                redirect(`/profile/${userId}`);
+                router.push(`/profile/${userId}`);
               }}
             >
               <p className="text-sm font-medium leading-none">View Profile</p>
