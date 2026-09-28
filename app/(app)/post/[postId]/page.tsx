@@ -13,13 +13,7 @@ import CommentForm from "@/features/post/components/CommentForm";
 import PostHeader from "@/features/post/components/PostHeader";
 import { findComments, findPost } from "@/features/post/queries";
 import { getSession } from "@/lib/auth/session";
-import {
-  ArrowLeft,
-  Edit,
-  EllipsisVertical,
-  MessageCircle,
-  Trash,
-} from "lucide-react";
+import { ArrowLeft, Edit, EllipsisVertical, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { format } from "timeago.js";
@@ -89,7 +83,7 @@ const Post = async ({ params }: Props) => {
         <h1 className="mt-4 font-serif text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
           {post.title}
         </h1>
-        <p className="mt-4 text-base leading-relaxed break-words whitespace-pre-wrap text-foreground/90">
+        <p className="mt-4 text-base leading-relaxed wrap-break-word whitespace-pre-wrap text-foreground/90">
           {post.content}
         </p>
 
@@ -145,7 +139,7 @@ const Post = async ({ params }: Props) => {
                           {format(comment.createdAt)}
                         </p>
                       </div>
-                      <p className="text-sm leading-relaxed break-words whitespace-pre-wrap">
+                      <p className="text-sm leading-relaxed wrap-break-word whitespace-pre-wrap">
                         {comment.content}
                       </p>
                     </div>
