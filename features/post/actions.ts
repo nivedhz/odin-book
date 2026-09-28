@@ -4,7 +4,7 @@ import { getSession } from "@/lib/auth/session";
 import { VoteType } from "@/lib/generated/prisma/enums";
 import { redirect } from "next/navigation";
 import z from "zod";
-import { createComment, updatePost } from "./queries";
+import { createComment, deletePost, updatePost } from "./queries";
 import { CommentResponse, PostEditResponse } from "./types";
 import { CreatePostResponse, InputData } from "./types";
 import {
@@ -207,4 +207,9 @@ export async function getUserVote(postId: string): Promise<number> {
   const vote = await findUserVote(userId, postId);
   if (!vote) return 0;
   return vote.type === "UPVOTE" ? 1 : vote.type === "DOWNVOTE" ? -1 : 0;
+}
+
+export async function handleDeletePost(postId: string): Promise<void> {
+  await deletePost(postId);
+  redirect("/");
 }

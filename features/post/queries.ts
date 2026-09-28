@@ -151,3 +151,11 @@ export async function findUserVote(
     },
   });
 }
+
+export async function deletePost(postId: string): Promise<void> {
+  await prisma.post.delete({
+    where: {
+      id: postId,
+    },
+  });
+}
