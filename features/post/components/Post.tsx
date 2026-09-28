@@ -22,12 +22,12 @@ const Post = async ({ post }: Props) => {
   const userVoteStatus = await getUserVote(post.id);
   return (
     <article aria-label={`Post ${post.title}`}>
-      <Card className="w-150 hover:bg-accent transition-all ease-in">
+      <Card className="w-full">
         <PostHeader post={post} />
         <Link href={`/post/${post.id}`}>
           <CardContent>
             <CardTitle
-              className="text-2xl font-bold truncate"
+              className="truncate text-lg font-semibold tracking-tight"
               aria-label={`Post Title ${post.title}`}
               aria-level={2}
               role="heading"
@@ -35,29 +35,28 @@ const Post = async ({ post }: Props) => {
               {post.title}
             </CardTitle>
             <CardDescription
-              className="truncate"
+              className="line-clamp-3"
               aria-label={`Post Content ${post.content}`}
             >
               {post.content}
             </CardDescription>
           </CardContent>
         </Link>
-        <CardFooter>
-          <div className="flex items-center gap-2">
-            <VoteButtonGroup
-              post={post}
-              votes={noOfVotes}
-              userVoteStatus={userVoteStatus}
-            />
-            <Link href={`/post/${post.id}`}>
-              <Button
-                variant={"outline"}
-                aria-label={`Comment on ${post.title}`}
-              >
-                <MessageCircle size={16} />
-              </Button>
-            </Link>
-          </div>
+        <CardFooter className="gap-2">
+          <VoteButtonGroup
+            post={post}
+            votes={noOfVotes}
+            userVoteStatus={userVoteStatus}
+          />
+          <Link href={`/post/${post.id}`}>
+            <Button
+              variant={"outline"}
+              size={"icon"}
+              aria-label={`Comment on ${post.title}`}
+            >
+              <MessageCircle size={16} />
+            </Button>
+          </Link>
         </CardFooter>
       </Card>
     </article>

@@ -34,6 +34,7 @@ const VoteButtonGroup = ({ post, votes, userVoteStatus }: Props) => {
     <ButtonGroup>
       <Button
         variant={"outline"}
+        size={"sm"}
         onClick={handleUpvoteClick}
         disabled={isPending}
         aria-label={`Upvote ${post.title}`}
@@ -42,10 +43,11 @@ const VoteButtonGroup = ({ post, votes, userVoteStatus }: Props) => {
           size={16}
           className={voteStatus === 1 ? "text-green-500 fill-green-500" : ""}
         />
-        <span>{noOfVotes}</span>
+        <span className="tabular-nums">{noOfVotes}</span>
       </Button>
       <Button
         variant={"outline"}
+        size={"sm"}
         onClick={handleDownvoteClick}
         disabled={isPending}
         aria-label={`Downvote ${post.title}`}

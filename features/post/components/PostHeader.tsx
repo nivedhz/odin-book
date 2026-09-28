@@ -8,25 +8,26 @@ type Props = {
   post: Post;
 };
 const PostHeader = ({ post }: Props) => {
+  const username = post.author?.username ?? "Deleted user";
+  const createdAt = post.createdAt ? format(post.createdAt) : "unknown";
   return (
-    <CardHeader className="flex gap-2 items-center">
-      <Avatar>
-        <AvatarFallback>{post.author.username[0]}</AvatarFallback>
+    <CardHeader className="flex items-center gap-2">
+      <Avatar size="sm">
+        <AvatarFallback>{username[0]?.toUpperCase()}</AvatarFallback>
       </Avatar>
       <Link href={`/profile/${post.authorId}`}>
         <p
-          className="text-lg font-semibold text-muted-foreground hover:text-foreground"
-          aria-label={`Post Author ${post.author.username}`}
+          className="text-sm font-semibold text-muted-foreground hover:text-foreground"
+          aria-label={`Post Author ${username}`}
         >
-          u/{post.author.username}
+          u/{username}
         </p>
       </Link>
-      &middot;
       <p
-        className="text-sm text-muted-foreground"
-        aria-label={`Post Created at ${format(post.createdAt)}`}
+        className="text-xs text-muted-foreground"
+        aria-label={`Post Created at ${createdAt}`}
       >
-        {format(post.createdAt)}
+        {createdAt}
       </p>
     </CardHeader>
   );
