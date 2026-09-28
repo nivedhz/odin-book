@@ -26,3 +26,19 @@ export async function updateProfile(
     },
   });
 }
+
+export async function getUserPosts(userId: string) {
+  return await prisma.post.findMany({
+    where: {
+      authorId: userId,
+    },
+  });
+}
+
+export async function getUserComments(userId: string) {
+  return await prisma.comment.findMany({
+    where: {
+      authorId: userId,
+    },
+  });
+}

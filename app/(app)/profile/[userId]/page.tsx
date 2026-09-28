@@ -6,7 +6,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getProfile } from "@/features/profile/queries";
+import {
+  getProfile,
+  getUserComments,
+  getUserPosts,
+} from "@/features/profile/queries";
 import { getSession } from "@/lib/auth/session";
 import { Edit } from "lucide-react";
 import Link from "next/link";
@@ -23,6 +27,8 @@ const page = async ({ params }: Props) => {
   if (!user) {
     return notFound();
   }
+  const posts = await getUserPosts(user.id);
+  const comments = await getUserComments(userId);
   return (
     <div className="flex items-center justify-center flex-1">
       <Card className="min-w-150">
@@ -42,6 +48,26 @@ const page = async ({ params }: Props) => {
           <p>Username: u/{user.username}</p>
           <p>Email: {user.email}</p>
         </CardContent>
+        <h1>Posts: </h1>
+        {posts.map((post) => {
+          return (
+            <div key={post.id}>
+              <Link href={`/post/${post.id}`}>
+                <p className="truncate max-w-20"> {post.title}</p>
+              </Link>
+            </div>
+          );
+        })}
+        <h1>Comments:</h1>
+        {comments.map((comment) => {
+          return (
+            <div key={comment.id}>
+              <Link href={`/post/${comment.postId}`}>
+                <p className="truncate max-w-20"> {comment.content}</p>
+              </Link>
+            </div>
+          );
+        })}
       </Card>
     </div>
   );
