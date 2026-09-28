@@ -13,11 +13,8 @@ const Navbar = async () => {
     <nav className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
       <div className="mx-auto flex h-16 w-full max-w-5xl items-center justify-between px-4 sm:px-6">
         <Link href="/">
-          <span className="font-serif text-2xl font-semibold tracking-tight">
+          <span className="font-sans text-2xl font-bold tracking-tight">
             Booko
-            <span aria-hidden="true" className="text-brand">
-              .
-            </span>
           </span>
         </Link>
         <div className="flex items-center gap-1.5 sm:gap-2">
