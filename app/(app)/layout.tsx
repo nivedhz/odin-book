@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "@/app/globals.css";
 import Navbar from "@/components/Navbar";
+import PillLinks from "@/components/PillLinks";
 
 export const metadata: Metadata = {
   title: "Odin Book",
@@ -11,6 +12,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <main className="flex flex-col min-h-screen">
       <Navbar />
+
+      <PillLinks />
       {children}
     </main>
   );
