@@ -18,7 +18,7 @@ export default async function Home() {
               </li>
             </Link>
             <Link
-              href="/followers-post"
+              href="/follower/post"
               className="text-sm text-muted-foreground "
             >
               <li className="hover:bg-muted-foreground/40 px-2 py-1 rounded-full">
