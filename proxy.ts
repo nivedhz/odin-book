@@ -2,7 +2,15 @@ import { jwtVerify } from "jose";
 import { NextRequest, NextResponse } from "next/server";
 
 const publicRoutes = ["/login", "/sign-up"];
-const protectedRoutes = ["/create"];
+const protectedRoutes = [
+  "/create",
+  "/post/[postId]/edit",
+  "/profile/[userId]/edit",
+  "/follower/post",
+  "/profile/[userId]",
+  "/users",
+];
+
 const SECRET_KEY = process.env.JWT_SECRET;
 if (!SECRET_KEY) throw new Error("JWT_SECRET is not defined");
 const encodedKey = new TextEncoder().encode(SECRET_KEY);
